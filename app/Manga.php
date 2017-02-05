@@ -12,4 +12,9 @@ class Manga extends Model
     {
         return $this->belongsToMany(Source::class);
     }
+
+    public function manga_sources()
+    {
+        return $this->hasMany(MangaSource::class);
+    }
 }

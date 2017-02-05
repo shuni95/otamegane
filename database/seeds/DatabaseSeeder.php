@@ -26,6 +26,16 @@ class DatabaseSeeder extends Seeder
             ['manga_id' => 3, 'source_id' => 1],
             ['manga_id' => 4, 'source_id' => 1],
         ]);
-        // $this->call(UsersTableSeeder::class);
+
+        DB::table('telegram_users')->insert([
+            'user_id' => '108198894', 'first_name' => 'Junior', 'last_name' => 'Zavaleta', 'username' => 'JuniorZavaleta'
+        ]);
+
+        DB::table('subscriptions')->insert([
+            ['manga_source_id' => 1, 'telegram_user_id' => 1],
+            ['manga_source_id' => 2, 'telegram_user_id' => 1],
+            ['manga_source_id' => 3, 'telegram_user_id' => 1],
+            ['manga_source_id' => 4, 'telegram_user_id' => 1],
+        ]);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMangaSourceTable extends Migration
+class CreateSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateMangaSourceTable extends Migration
      */
     public function up()
     {
-        Schema::create('manga_source', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('manga_id');
-            $table->unsignedInteger('source_id');
+            $table->unsignedInteger('manga_source_id');
+            $table->unsignedInteger('telegram_user_id');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +28,6 @@ class CreateMangaSourceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('manga_source');
+        Schema::dropIfExists('subscriptions');
     }
 }

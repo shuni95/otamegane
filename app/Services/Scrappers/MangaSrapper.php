@@ -104,8 +104,7 @@ abstract class MangaSrapper
 
     protected function getSubscribers()
     {
-        // return Manga::subscribersOf($source_id)->get();
-        return collect([env('TELEGRAM_TEST_USER_ID')]);
+        return TelegramUser::subscribedTo($manga, $source_id)->pluck('user_id');
     }
 
     abstract protected function filter($crawler);
