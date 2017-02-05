@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(IdentifyTelegramUsers::class)->everyMinute();
+        $schedule->command(ScrapingManga::class)->everyTenMinutes();
     }
 
     /**
