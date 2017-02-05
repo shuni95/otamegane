@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNotificationsTable extends Migration
+class CreateMangaSourceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('manga');
-            $table->string('chapter', 5);
-            $table->string('title');
-            $table->string('status', 5);
+        Schema::create('manga_source', function (Blueprint $table) {
+            $table->unsignedInteger('manga_id');
             $table->unsignedInteger('source_id');
-            $table->timestamps();
         });
     }
 
@@ -31,6 +26,6 @@ class CreateNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('manga_source');
     }
 }
