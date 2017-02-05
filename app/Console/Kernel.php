@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use App\Console\Commands\IdentifyTelegramUsers;
+use App\Console\Commands\ScrapingManga;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         IdentifyTelegramUsers::class,
+        ScrapingManga::class,
     ];
 
     /**
