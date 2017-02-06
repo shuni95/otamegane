@@ -11,16 +11,23 @@ class SeeMangaCommand extends Command
 {
     protected $name = 'see_mangas';
 
-    protected $description = 'Add manga and source that you wants';
+    protected $description = 'See all the mangas of a source, write the source please.';
 
     public function handle($arguments)
     {
         $mangas = "";
 
-        Manga::pluck('name')->each(function ($manga) use (&$mangas) {
-            $mangas .= $manga."\n";
-        });
+        if (strlen($arguments) > 0) {
+            Manga::whereHas('sources', function ($source) use ($arguments) {
+                $source->where('name', $arguments);
+            })
+            ->pluck('name')->each(function ($manga) use (&$mangas) {
+                $mangas .= $manga."\n";
+            });
 
-        $this->replyWithMessage(['text' => $mangas]);
+            $this->replyWithMessage(['text' => $mangas]);
+        } else {
+            $this->replyWithMessage(['text' => 'Please write a valid source.']);
+        }
     }
 }
