@@ -29,8 +29,8 @@ abstract class MangaScrapper
 
     public function __construct()
     {
-        $this->source    = Source::find($this->source_id);
-        $this->mangas    = $this->source->mangas->pluck('name');
+        $this->source = Source::find($this->source_id);
+        $this->mangas = $this->source->mangas->pluck('name');
     }
 
     /**
