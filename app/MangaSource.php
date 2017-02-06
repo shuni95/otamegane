@@ -22,4 +22,13 @@ class MangaSource extends Model
     {
         return $this->belongsTo(Source::class);
     }
+
+    public function getLastChapterAttribute()
+    {
+        $notification = Notification::last($this->manga->name, $this->source_id);
+
+        if ($notification) {
+            return $notification->chapter . ' ' . $notification->title;
+        }
+    }
 }

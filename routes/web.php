@@ -27,3 +27,6 @@ $router->get('/mangas', ['as' => 'mangas.index' ,'uses' => 'MangaController@inde
 $router->get('/mangas/new', ['as' => 'mangas.add_form' ,'uses' => 'MangaController@create']);
 $router->post('/mangas', ['as' => 'mangas.add' ,'uses' => 'MangaController@store']);
 $router->get('/mangas/show/{id}', ['as' => 'mangas.show' ,'uses' => 'MangaController@show']);
+
+$router->get('/telegram_users', ['as' => 'telegram_users.index', 'uses' => 'TelegramUserController@index']);
+$router->get('/telegram_users/{id}/subscriptions', ['as' => 'telegram_users.subscriptions', 'uses' => 'TelegramUserController@subscriptions']);

@@ -14,4 +14,12 @@ class Notification extends Model
                      ->where('chapter', $chapter)
                      ->where('source_id', $source_id);
     }
+
+    public static function last($manga, $source_id)
+    {
+        return (new static())::where('manga', $manga)
+                     ->where('source_id', $source_id)
+                     ->orderBy('created_at', 'DESC')
+                     ->first();
+    }
 }

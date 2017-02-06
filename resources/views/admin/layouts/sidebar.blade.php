@@ -8,4 +8,7 @@
   <a class="item" href="{{ route('mangas.index') }}">
     <i class="book icon"></i> Mangas
   </a>
+  <a class="item" href="{{ route('telegram_users.index') }}">
+    <i class="send outline icon"></i> Telegram Users
+  </a>
 </div>

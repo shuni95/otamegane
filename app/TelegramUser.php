@@ -22,4 +22,9 @@ class TelegramUser extends Model
             ->where('source_id', $source_id);
         });
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . " " . $this->last_name;
+    }
 }
