@@ -12,21 +12,21 @@ use App\Notification;
 
 use App\Services\Scrappers\MangaStreamScrapper;
 
-class ScrapingManga extends Command
+class ScrappingManga extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'scraper:manga';
+    protected $signature = 'scrapper:manga';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Scraping a manga webpage';
+    protected $description = 'Scrapping a manga webpage';
 
     protected $mangas;
 

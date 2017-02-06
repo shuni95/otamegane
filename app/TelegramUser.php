@@ -13,7 +13,7 @@ class TelegramUser extends Model
         return $this->belongsToMany(MangaSource::class, 'subscriptions');
     }
 
-    public function scopeSuscribedTo($query, $manga, $source_id)
+    public function scopeSubscribedTo($query, $manga, $source_id)
     {
         $query->whereHas('subscriptions', function ($subscription) use ($manga, $source_id) {
             $subscription->whereHas('manga', function ($manga_query) use ($manga) {

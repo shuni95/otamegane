@@ -5,7 +5,7 @@ namespace App\Services\Scrappers;
 use Notification;
 use Telegram;
 
-class MangaStreamScrapper extends MangaSrapper
+class MangaStreamScrapper extends MangaScrapper
 {
     protected $source_id = 1;
 

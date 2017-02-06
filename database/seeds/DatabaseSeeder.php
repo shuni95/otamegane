@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Dragon Ball Super'],
             ['name' => 'Haikyu'],
             ['name' => 'Fairy Tail'],
+            ['name' => 'The Promised Neverland'],
         ]);
 
         DB::table('manga_source')->insert([
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ['manga_id' => 2, 'source_id' => 1],
             ['manga_id' => 3, 'source_id' => 1],
             ['manga_id' => 4, 'source_id' => 1],
+            ['manga_id' => 5, 'source_id' => 1],
         ]);
 
         DB::table('telegram_users')->insert([

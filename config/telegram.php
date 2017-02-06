@@ -57,5 +57,7 @@ return [
     */
     'commands' => [
         Telegram\Bot\Commands\HelpCommand::class,
+        App\Console\Commands\Telegram\SeeMangaCommand::class,
+        App\Console\Commands\Telegram\AddMangaCommand::class,
     ],
 ];

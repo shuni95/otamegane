@@ -6,7 +6,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use App\Console\Commands\IdentifyTelegramUsers;
-use App\Console\Commands\ScrapingManga;
+use App\Console\Commands\ScrappingManga;
+use App\Console\Commands\Webhook;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,7 +18,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         IdentifyTelegramUsers::class,
-        ScrapingManga::class,
+        ScrappingManga::class,
+        Webhook::class,
     ];
 
     /**
@@ -28,8 +30,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(IdentifyTelegramUsers::class)->everyMinute();
-        $schedule->command(ScrapingManga::class)->everyTenMinutes();
+        // $schedule->command(IdentifyTelegramUsers::class)->everyMinute();
+        $schedule->command(ScrapingManga::class)->everyMinute();
+        $schedule->command(Webhook::class)->cron('* * * * * *');;
     }
 
     /**

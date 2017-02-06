@@ -4,10 +4,12 @@ namespace App\Services\Scrappers;
 
 use App\Source;
 use App\Notification;
+use App\TelegramUser;
+
 use Goutte;
 use Telegram;
 
-abstract class MangaSrapper
+abstract class MangaScrapper
 {
     /**
      * Collection of manga, each page have a set of manga
@@ -51,7 +53,7 @@ abstract class MangaSrapper
      */
     protected function dontExistsPreviousNotification($manga, $chapter)
     {
-        return Notification::dontExistsPrevious($manga, $chapter, $this->source_id);
+        return is_null(Notification::previous($manga, $chapter, $this->source_id)->first());
     }
 
     public function scrapping()
@@ -82,7 +84,7 @@ abstract class MangaSrapper
                                 'source_id' => $this->source_id,
                             ]);
 
-                            $this->getSubscribers()->each(function ($suscriber) use ($text) {
+                            $this->getSubscribers($manga)->each(function ($suscriber) use ($text) {
                                 Telegram::sendMessage([
                                     'chat_id' => $suscriber,
                                     'text' => $text,
@@ -93,7 +95,6 @@ abstract class MangaSrapper
                             $notification->status = 'DONE';
                             $notification->save();
                         }
-
                     } else {
                         $is_recent = false;
                     }
@@ -102,9 +103,9 @@ abstract class MangaSrapper
         });
     }
 
-    protected function getSubscribers()
+    protected function getSubscribers($manga)
     {
-        return TelegramUser::subscribedTo($manga, $source_id)->pluck('user_id');
+        return TelegramUser::subscribedTo($manga, $this->source_id)->pluck('user_id');
     }
 
     abstract protected function filter($crawler);
