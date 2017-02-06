@@ -22,6 +22,7 @@
     </div>
 
     <button class="ui green button" type="submit">Add</button>
+    <a href="{{ route('sources.index') }}" class="ui button">Back</a>
   </form>
 
 @endsection
