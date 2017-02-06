@@ -11,6 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('users')->insert(['name' => 'juni', 'email' => 'admin@admin.com', 'password' => bcrypt('secret')]);
+
         DB::table('sources')->insert(['name' => 'MangaStream', 'url' => 'http://mangastream.com/']);
 
         DB::table('mangas')->insert([
