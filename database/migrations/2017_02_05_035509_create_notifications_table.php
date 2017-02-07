@@ -16,7 +16,7 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
             $table->string('manga');
-            $table->string('chapter', 5);
+            $table->string('chapter', 8);
             $table->string('title');
             $table->string('status', 5);
             $table->unsignedInteger('source_id');
