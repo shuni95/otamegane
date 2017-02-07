@@ -36,14 +36,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('telegram_chats')->insert([
-            'chat_id' => '108198894', 'first_name' => 'Junior', 'last_name' => 'Zavaleta', 'username' => 'JuniorZavaleta', 'type' => 'private'
+            'chat_id' => 108198894, 'first_name' => 'Junior', 'last_name' => 'Zavaleta', 'username' => 'JuniorZavaleta', 'type' => 'private'
         ]);
 
         DB::table('subscriptions')->insert([
-            ['manga_source_id' => 1, 'telegram_chat_id' => 1],
-            ['manga_source_id' => 2, 'telegram_chat_id' => 1],
-            ['manga_source_id' => 3, 'telegram_chat_id' => 1],
-            ['manga_source_id' => 4, 'telegram_chat_id' => 1],
+            ['manga_source_id' => 1, 'telegram_chat_id' => 108198894],
+            ['manga_source_id' => 2, 'telegram_chat_id' => 108198894],
+            ['manga_source_id' => 3, 'telegram_chat_id' => 108198894],
+            ['manga_source_id' => 4, 'telegram_chat_id' => 108198894],
         ]);
     }
 }

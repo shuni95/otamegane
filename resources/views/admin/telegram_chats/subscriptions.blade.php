@@ -6,7 +6,7 @@
 
   @include('admin.error_message')
 
-  <div class="ui basic segment"><h2>Subscriptions of {{ $telegram_user->full_name }}</h2></div>
+  <div class="ui basic segment"><h2>Subscriptions of {{ $telegram_chat->full_name }}</h2></div>
 
   <table class="ui table">
     <thead>
@@ -17,7 +17,7 @@
       <th>Actions</th>
     </thead>
     <tbody>
-      @foreach ($telegram_user->subscriptions as $subscription)
+      @foreach ($telegram_chat->subscriptions as $subscription)
       <tr>
         <td>{{ $loop->iteration }}</td>
         <td>{{ $subscription->manga->name }}</td>
@@ -28,7 +28,7 @@
     </tbody>
   </table>
 
-  <a href="{{ route('telegram_users.index') }}" class="ui button">Back</a>
+  <a href="{{ route('telegram_chats.index') }}" class="ui button">Back</a>
 
 @endsection
 

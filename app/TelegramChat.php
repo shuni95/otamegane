@@ -12,7 +12,7 @@ class TelegramChat extends Model
 
     public function subscriptions()
     {
-        return $this->belongsToMany(MangaSource::class, 'subscriptions');
+        return $this->belongsToMany(MangaSource::class, 'subscriptions', 'telegram_chat_id');
     }
 
     public function scopeSubscribedTo($query, $manga, $source_id)

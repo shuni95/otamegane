@@ -27,7 +27,7 @@
 
   <div class="blue card">
     <div class="content">
-      <a class="header" href="{{ route('telegram_chats.index') }}" title="Telegram Users">
+      <a class="header" href="{{ route('telegram_chats.index') }}" title="Telegram Chats">
         <i class="send outline huge blue book icon"></i>
       </a>
     </div>

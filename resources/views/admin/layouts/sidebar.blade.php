@@ -9,6 +9,6 @@
     <i class="book icon"></i> Mangas
   </a>
   <a class="item" href="{{ route('telegram_chats.index') }}">
-    <i class="send outline icon"></i> Telegram Users
+    <i class="send outline icon"></i> Telegram Chats
   </a>
 </div>
