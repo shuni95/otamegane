@@ -4,14 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use Goutte;
-use Telegram;
-use Spatie\Emoji\Emoji;
-use App\TelegramUser;
-use App\Notification;
-
-use App\Services\Scrappers\MangaStreamScrapper;
-
 class ScrappingManga extends Command
 {
     /**
@@ -28,9 +20,11 @@ class ScrappingManga extends Command
      */
     protected $description = 'Scrapping a manga webpage';
 
-    protected $mangas;
-
-    protected $is_recent;
+    /**
+     * Collection of scrappers
+     * @var Collection
+     */
+    protected $scrappers;
 
     /**
      * Create a new command instance.
@@ -40,6 +34,14 @@ class ScrappingManga extends Command
     public function __construct()
     {
         parent::__construct();
+
+        $this->namespace = 'App\Services\Scrappers\\';
+
+        $this->scrappers = collect([
+            'MangaStreamScrapper',
+            'MangaPandaScrapper',
+            'MangaFoxScrapper'
+        ]);
     }
 
     /**
@@ -49,6 +51,8 @@ class ScrappingManga extends Command
      */
     public function handle()
     {
-        $scrapper = (new MangaStreamScrapper)->scrapping();
+        $this->scrappers->each(function ($scrapper) {
+            resolve($this->namespace. $scrapper)->scrapping();
+        });
     }
 }

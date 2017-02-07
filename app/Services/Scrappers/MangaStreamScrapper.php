@@ -2,12 +2,9 @@
 
 namespace App\Services\Scrappers;
 
-use Notification;
-use Telegram;
-
 class MangaStreamScrapper extends MangaScrapper
 {
-    protected $source_id = 1;
+    protected $source_name = 'MangaStream';
 
     protected function filter($crawler)
     {

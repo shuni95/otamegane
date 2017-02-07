@@ -23,13 +23,13 @@ abstract class MangaScrapper
      */
     protected $source;
 
-    protected $source_id;
+    protected $source_name;
 
     protected $is_recent;
 
     public function __construct()
     {
-        $this->source = Source::find($this->source_id);
+        $this->source = Source::where('name', $this->source_name)->first();
         $this->mangas = $this->source->mangas->pluck('name');
     }
 
@@ -53,7 +53,7 @@ abstract class MangaScrapper
      */
     protected function dontExistsPreviousNotification($manga, $chapter)
     {
-        return is_null(Notification::previous($manga, $chapter, $this->source_id)->first());
+        return is_null(Notification::previous($manga, $chapter, $this->source->id)->first());
     }
 
     public function scrapping()
@@ -72,7 +72,6 @@ abstract class MangaScrapper
                         $url     = $this->getUrl($node);
                         $title   = $this->getTitle($node);
                         $chapter = $this->getChapter($node);
-
                         if ($this->dontExistsPreviousNotification($manga, $chapter)) {
                             $text = $this->getTextNotification($manga, $chapter, $title, $time, $url);
 
@@ -81,7 +80,7 @@ abstract class MangaScrapper
                                 'chapter' => $chapter,
                                 'title' => $title,
                                 'status' => 'WIP',
-                                'source_id' => $this->source_id,
+                                'source_id' => $this->source->id,
                             ]);
 
                             $this->getSubscribers($manga)->each(function ($suscriber) use ($text) {
@@ -105,7 +104,7 @@ abstract class MangaScrapper
 
     protected function getSubscribers($manga)
     {
-        return TelegramUser::subscribedTo($manga, $this->source_id)->pluck('user_id');
+        return TelegramUser::subscribedTo($manga, $this->source->id)->pluck('user_id');
     }
 
     abstract protected function filter($crawler);

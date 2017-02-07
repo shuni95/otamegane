@@ -2,12 +2,9 @@
 
 namespace App\Services\Scrappers;
 
-use Notification;
-use Telegram;
-
 class MangaFoxScrapper extends MangaScrapper
 {
-    protected $source_id = 6;
+    protected $source_name = 'MangaFox';
 
     protected function filter($crawler)
     {
@@ -33,7 +30,7 @@ class MangaFoxScrapper extends MangaScrapper
 
     protected function getTime($node)
     {
-        return $node->filter('span')->text();
+        return $node->filter('em')->text();
     }
 
     protected function isRecent($time)

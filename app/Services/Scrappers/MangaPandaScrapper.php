@@ -4,7 +4,7 @@ namespace App\Services\Scrappers;
 
 class MangaPandaScrapper extends MangaScrapper
 {
-    protected $source_id = 7;
+    protected $source_name = 'MangaPanda';
 
     protected function filter($crawler)
     {
