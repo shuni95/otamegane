@@ -24,6 +24,14 @@
       </a>
     </div>
   </div>
+
+  <div class="blue card">
+    <div class="content">
+      <a class="header" href="{{ route('telegram_users.index') }}" title="Telegram Users">
+        <i class="send outline huge blue book icon"></i>
+      </a>
+    </div>
+  </div>
 </div>
 
 @endsection
