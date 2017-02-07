@@ -13,7 +13,11 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('users')->insert(['name' => 'juni', 'email' => 'admin@admin.com', 'password' => bcrypt('secret')]);
 
-        DB::table('sources')->insert(['name' => 'MangaStream', 'url' => 'http://mangastream.com/']);
+        DB::table('sources')->insert([
+            ['name' => 'MangaStream', 'url' => 'http://mangastream.com/'],
+            ['name' => 'MangaPanda', 'url' => 'http://www.mangapanda.com/'],
+            ['name' => 'MangaFox', 'url' => 'http://mangafox.me/']
+        ]);
 
         DB::table('mangas')->insert([
             ['name' => 'One Piece'],
@@ -31,15 +35,15 @@ class DatabaseSeeder extends Seeder
             ['manga_id' => 5, 'source_id' => 1],
         ]);
 
-        DB::table('telegram_users')->insert([
-            'user_id' => '108198894', 'first_name' => 'Junior', 'last_name' => 'Zavaleta', 'username' => 'JuniorZavaleta'
+        DB::table('telegram_chats')->insert([
+            'chat_id' => '108198894', 'first_name' => 'Junior', 'last_name' => 'Zavaleta', 'username' => 'JuniorZavaleta', 'type' => 'private'
         ]);
 
         DB::table('subscriptions')->insert([
-            ['manga_source_id' => 1, 'telegram_user_id' => 1],
-            ['manga_source_id' => 2, 'telegram_user_id' => 1],
-            ['manga_source_id' => 3, 'telegram_user_id' => 1],
-            ['manga_source_id' => 4, 'telegram_user_id' => 1],
+            ['manga_source_id' => 1, 'telegram_chat_id' => 1],
+            ['manga_source_id' => 2, 'telegram_chat_id' => 1],
+            ['manga_source_id' => 3, 'telegram_chat_id' => 1],
+            ['manga_source_id' => 4, 'telegram_chat_id' => 1],
         ]);
     }
 }

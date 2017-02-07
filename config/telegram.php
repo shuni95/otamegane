@@ -60,5 +60,6 @@ return [
         App\Console\Commands\Telegram\SeeMangaCommand::class,
         App\Console\Commands\Telegram\AddMangaCommand::class,
         App\Console\Commands\Telegram\SeeSourceCommand::class,
+        App\Console\Commands\Telegram\StartCommand::class,
     ],
 ];

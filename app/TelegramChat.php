@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TelegramUser extends Model
+class TelegramChat extends Model
 {
-    protected $fillable = ['user_id', 'first_name', 'last_name', 'username'];
+    protected $primaryKey = 'chat_id';
+
+    protected $fillable = ['chat_id', 'first_name', 'last_name', 'username', 'title', 'type'];
 
     public function subscriptions()
     {

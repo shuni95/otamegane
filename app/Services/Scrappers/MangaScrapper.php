@@ -4,7 +4,7 @@ namespace App\Services\Scrappers;
 
 use App\Source;
 use App\Notification;
-use App\TelegramUser;
+use App\TelegramChat;
 
 use Goutte;
 use Telegram;
@@ -104,7 +104,7 @@ abstract class MangaScrapper
 
     protected function getSubscribers($manga)
     {
-        return TelegramUser::subscribedTo($manga, $this->source->id)->pluck('user_id');
+        return TelegramChat::subscribedTo($manga, $this->source->id)->pluck('chat_id');
     }
 
     abstract protected function filter($crawler);

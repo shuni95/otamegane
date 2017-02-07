@@ -16,7 +16,7 @@ class CreateSubscriptionsTable extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('manga_source_id');
-            $table->unsignedInteger('telegram_user_id');
+            $table->bigInteger('telegram_chat_id');
             $table->timestamps();
         });
     }
