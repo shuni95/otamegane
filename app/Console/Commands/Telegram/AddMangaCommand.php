@@ -6,7 +6,6 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 
 use App\MangaSource;
-use App\TelegramChat;
 use DB;
 
 use Spatie\Emoji\Emoji;
@@ -47,9 +46,7 @@ class AddMangaCommand extends Command
                 if ($already_subscribed) {
                     $this->replyWithMessage(['text' => 'Already subscribed '.Emoji::CHARACTER_GRIMACING_FACE]);
                 } else {
-                    $telegram_user = TelegramChat::find($chat_id);
-
-                    DB::table('subscriptions')->insert(['manga_source_id' => $manga_source->id, 'telegram_chat_id' => $telegram_user->id]);
+                    DB::table('subscriptions')->insert(['manga_source_id' => $manga_source->id, 'telegram_chat_id' => $chat_id]);
 
                     $this->replyWithMessage(['text' => 'Manga '. $manga_name . ' of '. $source_name .' added successfully '.Emoji::CHARACTER_SMILING_FACE_WITH_SUNGLASSES]);
                 }

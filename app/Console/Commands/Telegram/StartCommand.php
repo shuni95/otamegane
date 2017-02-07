@@ -16,12 +16,11 @@ class StartCommand extends Command
 
     public function handle($arguments)
     {
-        dd($this->getUpdate());
         $message = $this->getUpdate()->getMessage();
         $from = $message->getFrom();
         $chat = $message->getChat();
 
-        $telegram_user = TelegramChat::find($chat->getId())->first();
+        $telegram_user = TelegramChat::find($chat->getId());
 
         if (is_null($telegram_user)) {
             if ($chat->getType() == 'private') {
