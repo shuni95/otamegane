@@ -11,4 +11,7 @@
   <a class="item" href="{{ route('telegram_chats.index') }}">
     <i class="send outline icon"></i> Telegram Chats
   </a>
+  <a class="item" href="{{ route('suggestions.index') }}">
+    <i class="inbox icon"></i> Suggestions
+  </a>
 </div>
