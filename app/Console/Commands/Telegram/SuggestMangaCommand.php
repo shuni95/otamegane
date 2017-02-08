@@ -14,7 +14,7 @@ class SuggestMangaCommand extends Command
     protected $name = 'suggest_manga';
 
     protected $description = "Suggest a manga, please write the same name that appear in the source added\n".
-    "/suggest_manga Nisekoi, TuMangaOnline";
+    "Nisekoi, TuMangaOnline";
 
     public function handle($arguments)
     {
