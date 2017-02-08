@@ -30,3 +30,7 @@ $router->get('/mangas/show/{id}', ['as' => 'mangas.show' ,'uses' => 'MangaContro
 
 $router->get('/telegram_chats', ['as' => 'telegram_chats.index', 'uses' => 'TelegramChatController@index']);
 $router->get('/telegram_chats/{id}/subscriptions', ['as' => 'telegram_chats.subscriptions', 'uses' => 'TelegramChatController@subscriptions']);
+
+$router->post(env('TELEGRAM_BOT_TOKEN').'/webhook', function() {
+    \Telegram::commandsHandler(true);
+});

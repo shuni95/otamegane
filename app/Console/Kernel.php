@@ -6,7 +6,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use App\Console\Commands\ScrappingManga;
-use App\Console\Commands\Webhook;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,7 +16,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ScrappingManga::class,
-        Webhook::class,
     ];
 
     /**
@@ -29,7 +27,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(ScrappingManga::class)->everyFiveMinutes();
-        $schedule->command(Webhook::class)->cron('* * * * * *');;
     }
 
     /**
