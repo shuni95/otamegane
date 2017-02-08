@@ -25,6 +25,9 @@
         <td>{{ $loop->iteration }}</td>
         <td>{{ $source->name }}</td>
         <td><a href="{{ $source->url }}">{{ $source->url }}</a></td>
+        <td>
+          <a href="{{ route('sources.add_manga_form', ['id' => $source->id]) }}" title="Add Manga"><i class="book icon"></i></a>
+        </td>
       </tr>
     @endforeach
     </tbody>
