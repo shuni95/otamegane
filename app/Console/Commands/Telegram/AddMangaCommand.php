@@ -21,7 +21,7 @@ class AddMangaCommand extends Command
 
     public function handle($arguments)
     {
-        $arguments   = explode(',', $arguments);
+        $arguments = explode(',', $arguments);
 
         if (count($arguments) < 2) {
            $this->replyWithMessage(['text' => 'Please check the name of the manga and the source '.Emoji::CHARACTER_CRYING_FACE]);
