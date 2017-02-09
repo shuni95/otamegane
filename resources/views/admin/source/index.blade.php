@@ -6,13 +6,17 @@
 
   @include('admin.success_message')
 
-  <div class="ui blue segment"><h2>List of Sources</h2></div>
-
-  <div class="ui basic right aligned segment">
-    <a class="ui blue button" href="{{ route('sources.add_form') }}">New Source</a>
+  <div class="ui blue center aligned segment">
+    <h2>List of Sources</h2>
   </div>
 
-  <table class="ui blue table">
+  <div class="ui basic right aligned segment">
+    <a class="ui blue button" href="{{ route('sources.add_form') }}">
+      <i class="tag icon"></i> New Source
+    </a>
+  </div>
+
+  <table class="ui blue very compact table">
     <thead>
       <th>#</th>
       <th>Name</th>

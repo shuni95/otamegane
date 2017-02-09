@@ -6,13 +6,17 @@
 
   @include('admin.success_message')
 
-  <div class="ui blue segment"><h2>List of Manga</h2></div>
-
-  <div class="ui basic right aligned segment">
-    <a class="ui blue button" href="{{ route('mangas.add_form') }}">New Manga</a>
+  <div class="ui blue center aligned segment">
+    <h2>List of Manga</h2>
   </div>
 
-  <table class="ui blue table">
+  <div class="ui basic right aligned segment">
+    <a class="ui blue icon button" href="{{ route('mangas.add_form') }}">
+      <i class="book icon"></i> Add Manga
+    </a>
+  </div>
+
+  <table class="ui blue very compact table">
     <thead>
       <th>#</th>
       <th>Name</th>

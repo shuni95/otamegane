@@ -16,12 +16,10 @@
   @include('admin.layouts.sidebar')
 
   <div class="ui fixed inverted main menu">
-    <div class="ui container">
-      <a class="item" id="menu-button">
-        <i class="sidebar icon"></i>
-        Menu
-      </a>
-    </div>
+    <a class="item" id="menu-button">
+      <i class="sidebar icon"></i>
+      Menu
+    </a>
   </div>
 
   <div class="pusher">

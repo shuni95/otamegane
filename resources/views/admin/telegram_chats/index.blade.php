@@ -6,9 +6,9 @@
 
   @include('admin.success_message')
 
-  <div class="ui blue segment"><h2>List of Telegram Chats</h2></div>
+  <div class="ui blue center aligned segment"><h2>List of Telegram Chats</h2></div>
 
-  <table class="ui blue table">
+  <table class="ui blue very compact table">
     <thead>
       <th>#</th>
       <th>First Name</th>
