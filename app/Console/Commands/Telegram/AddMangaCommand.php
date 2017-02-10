@@ -31,12 +31,13 @@ class AddMangaCommand extends Command
             $source_name = trim($arguments[1]);
             $telegram_chat_id     = $this->getUpdate()->getMessage()->getChat()->getId();
 
-            $manga_source_id = MangaSource::getMangaInSource($manga_name, $source_name)->id;
+            $manga_source = MangaSource::getMangaInSource($manga_name, $source_name);
 
             if (is_null($manga_source)) {
                 $message = "Please check the name of the manga and the source ".Emoji::CHARACTER_CRYING_FACE;
             } else {
-                if (Subscription::alreadySubscribed($manga_source->id, $telegram_chat_id)) {
+                $manga_source_id = $manga_source->id;
+                if (Subscription::alreadySubscribed($manga_source_id, $telegram_chat_id)) {
                     $message = "Already subscribed ".Emoji::CHARACTER_GRIMACING_FACE;
                 } else {
                     Subscription::create(compact('manga_source_id', 'telegram_chat_id'));
