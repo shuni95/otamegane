@@ -18,13 +18,23 @@ class Manga extends Model
         return $this->hasMany(MangaSource::class);
     }
 
-    public function subscribers()
+    public function subscriptions()
     {
         return $this->hasManyThrough(Subscription::class, MangaSource::class);
     }
 
     public function getTotalSubscribersAttribute()
     {
-        return $this->subscribers->count();
+        return $this->subscriptions->unique('telegram_chat_id')->count();
+    }
+
+    public function getTotalSubscriptionsAttribute()
+    {
+        return $this->subscriptions->count();
+    }
+
+    public function getNumSourcesAttribute()
+    {
+        return $this->sources->count();
     }
 }

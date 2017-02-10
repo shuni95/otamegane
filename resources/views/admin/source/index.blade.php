@@ -20,6 +20,9 @@
     <thead>
       <th>#</th>
       <th>Name</th>
+      <th># subscribers</th>
+      <th># subscriptions</th>
+      <th># mangas</th>
       <th>Url</th>
       <th>Actions</th>
     </thead>
@@ -28,6 +31,9 @@
       <tr>
         <td>{{ $loop->iteration }}</td>
         <td>{{ $source->name }}</td>
+        <td>{{ $source->total_subscribers }}</td>
+        <td>{{ $source->total_subscriptions }}</td>
+        <td>{{ $source->num_mangas }}</td>
         <td><a href="{{ $source->url }}">{{ $source->url }}</a></td>
         <td>
           <a href="{{ route('sources.add_manga_form', ['id' => $source->id]) }}" title="Add Manga"><i class="book icon"></i></a>
