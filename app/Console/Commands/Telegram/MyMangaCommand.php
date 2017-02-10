@@ -15,12 +15,11 @@ class MyMangaCommand extends Command
 
     public function handle($arguments)
     {
-        $subscriptions = "";
         $chat_id       = $this->getUpdate()->getMessage()->getChat()->getId();
 
-        TelegramChat::find($chat_id)->subscriptions->each(function ($subscription) use (&$subscriptions) {
-            $subscriptions .= $subscription->manga->name . " - " . $subscription->source->name . "\n";
-        });
+        $subscriptions = TelegramChat::find($chat_id)->subscriptions->map(function ($subscription) {
+            return $subscription->manga->name . " - " . $subscription->source->name;
+        })->implode("\n");
 
         $this->replyWithMessage(['text' => $subscriptions]);
     }

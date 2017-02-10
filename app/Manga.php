@@ -37,4 +37,11 @@ class Manga extends Model
     {
         return $this->sources->count();
     }
+
+    public function scopeBelongsSource($query, $source_name)
+    {
+        return $query->whereHas('sources', function ($source) use ($source_name) {
+            $source->where('name', $source_name);
+        });
+    }
 }

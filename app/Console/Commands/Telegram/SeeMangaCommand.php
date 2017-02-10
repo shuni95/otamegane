@@ -15,15 +15,8 @@ class SeeMangaCommand extends Command
 
     public function handle($arguments)
     {
-        $mangas = "";
-
         if (strlen($arguments) > 0) {
-            Manga::whereHas('sources', function ($source) use ($arguments) {
-                $source->where('name', $arguments);
-            })
-            ->pluck('name')->each(function ($manga) use (&$mangas) {
-                $mangas .= $manga."\n";
-            });
+            $mangas = Manga::belongsSource($arguments)->pluck('name')->implode("\n");
 
             $this->replyWithMessage(['text' => $mangas]);
         } else {

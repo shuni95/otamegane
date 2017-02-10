@@ -15,11 +15,7 @@ class SeeSourceCommand extends Command
 
     public function handle($arguments)
     {
-        $sources = "";
-
-        Source::pluck('name')->each(function ($source) use (&$sources) {
-            $sources .= $source."\n";
-        });
+        $sources = Source::pluck('name')->implode("\n");
 
         $this->replyWithMessage(['text' => $sources]);
     }
