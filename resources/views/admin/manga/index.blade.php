@@ -20,6 +20,7 @@
     <thead>
       <th>#</th>
       <th>Name</th>
+      <th>Total subscribers</th>
       <th>Actions</th>
     </thead>
     <tbody>
@@ -27,6 +28,7 @@
       <tr>
         <td>{{ $loop->iteration }}</td>
         <td>{{ $manga->name }}</td>
+        <td>{{ $manga->total_subscribers }}</td>
         <td>
            <a href="{{ route('mangas.show', ['id' => $manga->id ]) }}" title="Show"><i class="eye icon"></i></a>
         </td>

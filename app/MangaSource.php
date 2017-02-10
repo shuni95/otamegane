@@ -10,7 +10,7 @@ class MangaSource extends Model
 
     public function subscribers()
     {
-        return $this->belongsToMany(TelegramChat::class, 'subscriptions');
+        return $this->belongsToMany(TelegramChat::class, 'subscriptions', 'manga_source_id', 'telegram_chat_id');
     }
 
     public function manga()

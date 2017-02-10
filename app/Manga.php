@@ -17,4 +17,14 @@ class Manga extends Model
     {
         return $this->hasMany(MangaSource::class);
     }
+
+    public function subscribers()
+    {
+        return $this->hasManyThrough(Subscription::class, MangaSource::class);
+    }
+
+    public function getTotalSubscribersAttribute()
+    {
+        return $this->subscribers->count();
+    }
 }

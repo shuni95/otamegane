@@ -11,7 +11,7 @@ class MangaController extends Controller
 {
     public function index()
     {
-        $mangas = Manga::all();
+        $mangas = Manga::with('manga_sources')->get();
 
         return view('admin.manga.index', compact('mangas'));
     }
