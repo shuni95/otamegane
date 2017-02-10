@@ -35,12 +35,13 @@ class ScrappingManga extends Command
     {
         parent::__construct();
 
-        $this->namespace = 'App\Services\Scrappers\\';
+        $this->namespace = 'App\Services\\';
 
         $this->scrappers = collect([
-            'MangaStreamScrapper',
-            'MangaPandaScrapper',
-            'MangaFoxScrapper'
+            'Scrappers\\MangaStreamScrapper',
+            'Scrappers\\MangaPandaScrapper',
+            'Scrappers\\MangaFoxScrapper',
+            'ApiScrappers\\TuMangaOnlineScrapper',
         ]);
     }
 
