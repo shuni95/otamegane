@@ -14,8 +14,8 @@ class SourceMangaController extends Controller
     {
         $source = Source::find($id);
 
-        $mangas = Manga::whereHas('manga_sources', function ($manga_source) use ($id) {
-            $manga_source->where('manga_source.source_id', '!=', $id);
+        $mangas = Manga::whereHas('manga_sources', function ($manga_source) use ($source) {
+            $manga_source->whereNotIn('manga_source.manga_id', $source->mangas->pluck('id'));
         })->get();
 
         return view('admin.source.add_manga', compact('source', 'mangas'));
