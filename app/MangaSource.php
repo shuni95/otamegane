@@ -31,4 +31,13 @@ class MangaSource extends Model
             return $notification->chapter . ' ' . $notification->title;
         }
     }
+
+    public static function getMangaInSource($manga_name, $source_name)
+    {
+        return (new static())::whereHas('manga', function ($manga) use ($manga_name) {
+            $manga->where('name', $manga_name);
+        })->whereHas('source', function ($source) use ($source_name) {
+            $source->where('name', $source_name);
+        })->first();
+    }
 }
