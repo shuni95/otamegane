@@ -63,12 +63,12 @@ abstract class MangaScrapper
 
         $this->filter($crawler)->each(function ($node) use (&$is_recent) {
             if ($is_recent) {
-                $manga   = $this->identifyManga($node->html());
+                $time  = $this->getTime($node);
 
-                if (!is_null($manga)) {
-                    $time = $this->getTime($node);
+                if ($this->isRecent($time)) {
+                    $manga = $this->identifyManga($node->html());
 
-                    if ($this->isRecent($time)) {
+                    if (!is_null($manga)) {
                         $url     = $this->getUrl($node);
                         $title   = $this->getTitle($node);
                         $chapter = $this->getChapter($node);
@@ -94,9 +94,9 @@ abstract class MangaScrapper
                             $notification->status = 'DONE';
                             $notification->save();
                         }
-                    } else {
-                        $is_recent = false;
                     }
+                } else {
+                    $is_recent = false;
                 }
             }
         });
