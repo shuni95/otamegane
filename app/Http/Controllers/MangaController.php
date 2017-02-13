@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\AddMangaRequest;
+use App\Http\Requests\Admin\UpdateMangaRequest;
 
 use App\Manga;
 use App\Source;
@@ -36,5 +37,21 @@ class MangaController extends Controller
         $manga = Manga::with('sources')->find($id);
 
         return view('admin.manga.show', compact('manga'));
+    }
+
+    public function edit($id)
+    {
+        $manga = Manga::find($id);
+
+        return view('admin.manga.edit', compact('manga'));
+    }
+
+    public function update($id, UpdateMangaRequest $request)
+    {
+        $manga = Manga::find($id);
+        $manga->name = request('name');
+        $manga->save();
+
+        return redirect()->route('mangas.index')->with('success_message', 'Manga updated successfully');
     }
 }

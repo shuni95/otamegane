@@ -35,6 +35,7 @@
         <td>{{ $manga->num_sources }}</td>
         <td>
            <a href="{{ route('mangas.show', ['id' => $manga->id ]) }}" title="Show"><i class="eye icon"></i></a>
+           <a href="{{ route('mangas.edit_form', ['id' => $manga->id ]) }}" title="Edit"><i class="edit icon"></i></a>
         </td>
       </tr>
     @endforeach
