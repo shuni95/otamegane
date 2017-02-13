@@ -10,7 +10,43 @@
     <h2>List of Manga</h2>
   </div>
 
-  <div class="ui basic right aligned segment">
+
+  <div class="ui pagination left aligned menu">
+  @php
+    $pages = $mangas->lastPage();
+    $current = $mangas->currentPage();
+  @endphp
+
+  @if ($pages > 10)
+    {{-- Use ... --}}
+    @if ($current <= 6)
+      @for ($page = 1; $page <= 9; $page++)
+        <a href="{{ route('mangas.index', ['page' => $page]) }}" class="{{ $current == $page ? 'active' : '' }} item">{{ $page }}</a>
+      @endfor
+        <a href="#" class="disabled item">...</a>
+        <a href="{{ route('mangas.index', ['page' => $pages]) }}" class="item">{{ $pages }}</a>
+    @elseif ($current >= ($pages-5))
+      <a href="{{ route('mangas.index', ['page' => 1]) }}" class="{{ $current == 1 ? 'active' : '' }} item">1</a>
+      <a href="#" class="disabled item">...</a>
+      @for ($page = $pages-9; $page <= $pages; $page++)
+        <a href="{{ route('mangas.index', ['page' => $page]) }}" class="{{ $current == $page ? 'active' : '' }} item">{{ $page }}</a>
+      @endfor
+    @else
+      <a href="{{ route('mangas.index', ['page' => 1]) }}" class="{{ $current == 1 ? 'active' : '' }} item">1</a>
+      <a href="#" class="disabled item">...</a>
+      @for ($page = $current-4; $page <= $current + 4; $page++)
+        <a href="{{ route('mangas.index', ['page' => $page]) }}" class="{{ $current == $page ? 'active' : '' }} item">{{ $page }}</a>
+      @endfor
+      <a href="#" class="disabled item">...</a>
+        <a href="{{ route('mangas.index', ['page' => $pages]) }}" class="item">{{ $pages }}</a>
+    @endif
+  @else
+    @for ($page = 1; $page <= $pages; $page++)
+      <a href="{{ route('mangas.index', ['page' => $page]) }}" class="{{ $current == $page ? 'active' : '' }} item">{{ $page }}</a>
+    @endfor
+  @endif
+  </div>
+  <div class="ui basic compact right floated segment" style="padding: 6px; margin: 0;">
     <a class="ui blue icon button" href="{{ route('mangas.add_form') }}">
       <i class="book icon"></i> Add Manga
     </a>
@@ -44,6 +80,7 @@
     @endforeach
     </tbody>
   </table>
+
   <script type="text/javascript">
     var templateShowUrl = "{{ route('mangas.show',['id' => 'manga_id']) }}";
     var templateEditUrl = "{{ route('mangas.edit_form',['id' => 'manga_id']) }}";

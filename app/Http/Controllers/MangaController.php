@@ -12,7 +12,7 @@ class MangaController extends Controller
 {
     public function index()
     {
-        $mangas = Manga::with('manga_sources')->get();
+        $mangas = Manga::with('manga_sources')->paginate(10);
 
         return view('admin.manga.index', compact('mangas'));
     }
