@@ -24,7 +24,7 @@
     </a>
   </div>
 
-  <table class="ui blue very hover compact table">
+  <table class="ui blue compact table">
     <thead>
       <th>#</th>
       <th>Name</th>
