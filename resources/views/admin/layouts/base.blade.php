@@ -7,8 +7,8 @@
   <title>@yield('title')</title>
   <link rel="stylesheet" type="text/css" href="{{ asset('/semantic.min.css') }}">
   <style type="text/css">
+    .ui.hover.table {cursor: pointer;}
     .row-selected { background-color: #E0E1E2; }
-    tr {cursor: pointer;}
   </style>
   <script src="{{ asset('/jquery-3.1.1.min.js') }}"></script>
   <script src="{{ asset('/semantic.min.js') }}"></script>
