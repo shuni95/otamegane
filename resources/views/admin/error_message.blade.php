@@ -12,8 +12,10 @@
 
 @push ('scripts')
 <script>
-  $('.message .close').on('click', function() {
+$(function(){
+  $('.message .close').click(function() {
     $(this).closest('.message').transition('fade');
   });
+});
 </script>
 @endpush
