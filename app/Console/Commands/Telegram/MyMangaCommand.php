@@ -7,6 +7,8 @@ use Telegram\Bot\Commands\Command;
 
 use App\TelegramChat;
 
+use Spatie\Emoji\Emoji;
+
 class MyMangaCommand extends Command
 {
     protected $name = 'my_mangas';
@@ -15,12 +17,16 @@ class MyMangaCommand extends Command
 
     public function handle($arguments)
     {
-        $chat_id       = $this->getUpdate()->getMessage()->getChat()->getId();
+        $chat_id = $this->getUpdate()->getMessage()->getChat()->getId();
 
         $subscriptions = TelegramChat::find($chat_id)->subscriptions->map(function ($subscription) {
             return $subscription->manga->name . " - " . $subscription->source->name;
         })->implode("\n");
 
-        $this->replyWithMessage(['text' => $subscriptions]);
+        if ($subscriptions != "") {
+            $this->replyWithMessage(['text' => $subscriptions]);
+        } else {
+            $this->replyWithMessage(['text' => 'You don\'t have any subscriptions to mangas '.Emoji::CHARACTER_CRYING_FACE]);
+        }
     }
 }
