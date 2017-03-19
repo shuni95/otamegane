@@ -30,6 +30,8 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->get('/mangas/new', ['as' => 'mangas.add_form' ,'uses' => 'MangaController@create']);
     $router->post('/mangas', ['as' => 'mangas.add' ,'uses' => 'MangaController@store']);
     $router->get('/mangas/show/{id}', ['as' => 'mangas.show' ,'uses' => 'MangaController@show']);
+    $router->get('/mangas/edit/{id}', ['as' => 'mangas.edit_form', 'uses' => 'MangaController@edit']);
+    $router->post('/mangas/edit/{id}', ['as' => 'mangas.update', 'uses' => 'MangaController@update']);
 
     $router->get('/telegram_chats', ['as' => 'telegram_chats.index', 'uses' => 'TelegramChatController@index']);
     $router->get('/telegram_chats/{id}/subscriptions', ['as' => 'telegram_chats.subscriptions', 'uses' => 'TelegramChatController@subscriptions']);

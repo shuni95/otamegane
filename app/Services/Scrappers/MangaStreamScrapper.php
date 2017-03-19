@@ -52,4 +52,20 @@ class MangaStreamScrapper extends MangaScrapper
                 "<i>" . $title . "</i> was released " . $time . "!\n".
                 $url;
     }
+
+    /**
+     * Identify the manga's name
+     * @param  string $html
+     * @return string
+     */
+    protected function identifyManga($html)
+    {
+        return $this->mangas->first(function ($manga) use ($html) {
+            $start = strpos($html, "</i>") + 4;
+            $end = strpos($html, "<strong>") - $start;
+            $html_manga = substr($html, $start, $end);
+
+            return trim($html_manga) == $manga;
+        });
+    }
 }
