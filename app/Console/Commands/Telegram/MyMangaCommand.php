@@ -15,7 +15,7 @@ class MyMangaCommand extends Command
 
     public function handle($arguments)
     {
-        $chat_id       = $this->getUpdate()->getMessage()->getChat()->getId();
+        $chat_id = $this->getUpdate()->getChat()->getId();
 
         $subscriptions = TelegramChat::find($chat_id)->subscriptions->map(function ($subscription) {
             return $subscription->manga->name . " - " . $subscription->source->name;

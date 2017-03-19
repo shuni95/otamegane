@@ -37,6 +37,4 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->get('/suggestions', ['as' => 'suggestions.index', 'uses' => 'SuggestionController@index']);
 });
 
-$router->post(env('TELEGRAM_BOT_TOKEN').'/webhook', function() {
-    \Telegram::commandsHandler(true);
-});
+$router->post(env('TELEGRAM_BOT_TOKEN').'/webhook', ['as' => 'handling_commands', 'uses' =>'HandlingCommandController@handle']);

@@ -4,8 +4,10 @@ namespace App\Console\Commands\Telegram;
 
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
+use Telegram\Bot\Keyboard\Keyboard;
 
 use App\TelegramChat;
+use App\Source;
 use Spatie\Emoji\Emoji;
 
 class StartCommand extends Command
@@ -43,5 +45,12 @@ class StartCommand extends Command
                 $this->replyWithMessage(['text' => 'Hi guys'.Emoji::CHARACTER_GRINNING_FACE_WITH_SMILING_EYES]);
             }
         }
+
+        $keyboard = Keyboard::make()->inline();
+        Source::pluck('name')->each(function ($source) use ($keyboard) {
+            $keyboard->row(Keyboard::inlineButton(['text' => $source, 'callback_data' => '/see_mangas '.$source]));
+        });
+
+        $this->replyWithMessage(['text' => 'Sources available', 'reply_markup' => $keyboard]);
     }
 }
