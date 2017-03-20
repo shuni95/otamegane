@@ -22,16 +22,16 @@ class SeeSourceCommand extends Command
         Source::pluck('name')->each(function ($source) use ($keyboard) {
             $keyboard->row(Keyboard::inlineButton(['text' => $source, 'callback_data' => '/see_mangas '.$source]));
         });
-
+        $keyboard->row(Keyboard::inlineButton(['text' => 'Back to Menu', 'callback_data' => '/start']));
 
         if ($update->isType('callback_query')) {
             $query = $update->getCallbackQuery();
 
             $this->getTelegram()->editMessageText([
-                'message_id' => $query->getMessage()->getMessageId(),
-                'chat_id' => $query->getMessage()->getChat()->getId(),
+                'message_id'   => $query->getMessage()->getMessageId(),
+                'chat_id'      => $query->getMessage()->getChat()->getId(),
                 'reply_markup' => $keyboard,
-                'text' => 'Sources available',
+                'text'         => 'Sources available',
             ]);
         } else {
             $this->replyWithMessage(['text' => 'Sources available', 'reply_markup' => $keyboard]);

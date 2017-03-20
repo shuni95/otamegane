@@ -15,6 +15,7 @@ class HandlingCommandController extends Controller
             'see_mangas',
             'see_sources',
             'start',
+            'my_mangas',
         ];
 
         $update = Telegram::commandsHandler(true);
@@ -24,11 +25,7 @@ class HandlingCommandController extends Controller
             $data  = $query->getData();
             $start = strpos($data, ' ');
 
-            if ($start !== false) {
-                $command = substr($data, 1, $start - 1);
-            } else {
-                $command = substr($data, 1);
-            }
+            $command = ($start !== false) ? substr($data, 1, $start - 1) : substr($data, 1);
 
             if (in_array($command, $commands)) {
                 $update->put('message', collect([
@@ -40,7 +37,6 @@ class HandlingCommandController extends Controller
                 Telegram::triggerCommand($command, $update);
             }
         }
-
 
         return response([], 200);
     }

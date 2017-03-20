@@ -18,7 +18,8 @@ class StartCommand extends Command
 
     public function handle($arguments)
     {
-        $message = $this->getUpdate()->getMessage();
+        $update  = $this->getUpdate();
+        $message = $update->getMessage();
         $from = $message->getFrom();
         $chat = $message->getChat();
 
@@ -46,11 +47,21 @@ class StartCommand extends Command
             }
         }
 
-        $keyboard = Keyboard::make()->inline();
-        Source::pluck('name')->each(function ($source) use ($keyboard) {
-            $keyboard->row(Keyboard::inlineButton(['text' => $source, 'callback_data' => '/see_mangas '.$source]));
-        });
+        $keyboard = Keyboard::make()->inline()
+        ->row(Keyboard::inlineButton(['text' => 'See sources '.Emoji::CHARACTER_TRADE_MARK_SIGN, 'callback_data' => '/see_sources']))
+        ->row(Keyboard::inlineButton(['text' => 'My Mangas '.Emoji::CHARACTER_BOOKS, 'callback_data' => '/my_mangas']));
 
-        $this->replyWithMessage(['text' => 'Sources available', 'reply_markup' => $keyboard]);
+        if ($update->isType('callback_query')) {
+            $query = $update->getCallbackQuery();
+
+            $this->getTelegram()->editMessageText([
+                'text'         => 'Menu',
+                'message_id'   => $query->getMessage()->getMessageId(),
+                'chat_id'      => $query->getMessage()->getChat()->getId(),
+                'reply_markup' => $keyboard,
+            ]);
+        } else  {
+            $this->replyWithMessage(['text' => 'Menu', 'reply_markup' => $keyboard]);
+        }
     }
 }
