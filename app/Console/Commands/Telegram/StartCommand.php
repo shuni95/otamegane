@@ -48,8 +48,10 @@ class StartCommand extends Command
         }
 
         $keyboard = Keyboard::make()->inline()
-        ->row(Keyboard::inlineButton(['text' => 'See sources '.Emoji::CHARACTER_TRADE_MARK_SIGN, 'callback_data' => '/see_sources']))
-        ->row(Keyboard::inlineButton(['text' => 'My Mangas '.Emoji::CHARACTER_BOOKS, 'callback_data' => '/my_mangas']));
+        ->row(
+            Keyboard::inlineButton(['text' => 'See sources '.Emoji::CHARACTER_TRADE_MARK_SIGN, 'callback_data' => '/see_sources']),
+            Keyboard::inlineButton(['text' => 'My Mangas '.Emoji::CHARACTER_BOOKS, 'callback_data' => '/my_mangas'])
+        );
 
         if ($update->isType('callback_query')) {
             $query = $update->getCallbackQuery();

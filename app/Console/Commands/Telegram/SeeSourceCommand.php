@@ -19,9 +19,20 @@ class SeeSourceCommand extends Command
         $update = $this->getUpdate();
 
         $keyboard = Keyboard::make()->inline();
-        Source::pluck('name')->each(function ($source) use ($keyboard) {
-            $keyboard->row(Keyboard::inlineButton(['text' => $source, 'callback_data' => '/see_mangas '.$source]));
-        });
+        $sources = Source::pluck('name')->getIterator();
+
+        for ($i = 0; $i < $sources->count(); $i += 2) {
+            if (isset($sources[$i+1])) {
+                $keyboard->row(
+                    Keyboard::inlineButton(['text' => $sources[$i], 'callback_data' => '/see_mangas '.$sources[$i]]),
+                    Keyboard::inlineButton(['text' => $sources[$i+1], 'callback_data' => '/see_mangas '.$sources[$i+1]])
+                );
+            } else {
+                $keyboard->row(
+                    Keyboard::inlineButton(['text' => $sources[$i], 'callback_data' => '/see_mangas '.$sources[$i]])
+                );
+            }
+        }
         $keyboard->row(Keyboard::inlineButton(['text' => 'Back to Menu', 'callback_data' => '/start']));
 
         if ($update->isType('callback_query')) {
