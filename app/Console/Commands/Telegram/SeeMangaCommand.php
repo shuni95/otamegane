@@ -14,18 +14,18 @@ class SeeMangaCommand extends Command
 
     protected $description = 'See all the mangas of a source, write the source please.';
 
-    public function handle($arguments)
+    public function handle($source)
     {
         $update = $this->getUpdate();
 
-        if (strlen($arguments) > 0) {
-            $mangas = Manga::belongsSource($arguments)->pluck('name');
+        if (strlen($source) > 0) {
+            $mangas = Manga::belongsSource($source)->pluck('name');
 
             if ($update->isType('callback_query')) {
                 $query = $update->getCallbackQuery();
                 $keyboard = Keyboard::make()->inline();
-                $mangas->each(function ($manga) use ($keyboard) {
-                    $keyboard->row(Keyboard::inlineButton(['text' => $manga, 'callback_data' => $manga]));
+                $mangas->each(function ($manga) use ($keyboard, $source) {
+                    $keyboard->row(Keyboard::inlineButton(['text' => $manga, 'callback_data' => "/add_manga $manga, $source"]));
                 });
                 $keyboard->row(Keyboard::inlineButton(['text' => 'Back', 'callback_data' => '/see_sources']));
 
@@ -33,7 +33,7 @@ class SeeMangaCommand extends Command
                     'message_id' => $query->getMessage()->getMessageId(),
                     'chat_id' => $query->getMessage()->getChat()->getId(),
                     'reply_markup' => $keyboard,
-                    'text' => 'Mangas of '. $arguments,
+                    'text' => 'Mangas of '. $source,
                 ]);
             } else {
                 $this->replyWithMessage(['text' => "List \n".$mangas->implode('\n')]);

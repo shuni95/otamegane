@@ -42,10 +42,10 @@ class MyMangaCommand extends Command
             $query = $update->getCallbackQuery();
 
             $this->getTelegram()->editMessageText([
-                'message_id' => $query->getMessage()->getMessageId(),
-                'chat_id' => $query->getMessage()->getChat()->getId(),
+                'message_id'   => $query->getMessage()->getMessageId(),
+                'chat_id'      => $update->getChat()->getId(),
                 'reply_markup' => $keyboard,
-                'text' => $text,
+                'text'         => $text,
             ]);
         } else {
             $this->replyWithMessage(['text' => $text, 'reply_markup' => $keyboard]);

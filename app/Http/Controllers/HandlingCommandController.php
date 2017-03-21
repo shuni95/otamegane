@@ -16,6 +16,7 @@ class HandlingCommandController extends Controller
             'see_sources',
             'start',
             'my_mangas',
+            'add_manga'
         ];
 
         $update = Telegram::commandsHandler(true);
