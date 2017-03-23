@@ -40,3 +40,5 @@ $router->group(['middleware' => 'auth'], function ($router) {
 });
 
 $router->post(env('TELEGRAM_BOT_TOKEN').'/webhook', ['as' => 'handling_commands', 'uses' =>'HandlingCommandController@handle']);
+$router->get('/messenger',['as' => 'messenger.verify', 'uses' => 'MessengerHandlerController@verify']);
+$router->post('/messenger',['as' => 'messenger.handle', 'uses' => 'MessengerHandlerController@handle']);
