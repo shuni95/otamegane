@@ -36,23 +36,29 @@ class MessengerHandlerController extends Controller
                 case 'my_mangas':   $this->sendMyMangas(); break;
             }
 
-            $payload = explode(' ', $payload);
-            $first_arg = trim($payload[0]);
+            $payload = explode(',', $payload);
 
-            if ($first_arg == 'see_mangas') {
+            if (trim($payload[0]) == 'see_mangas') {
                 $this->sendMangasOf(trim($payload[1]));
             }
 
-            if ($first_arg == 'add_manga') {
-                if (isset($payload[3])) {
-                    if ($payload[3] == 'YES') {
-                        $this->addSubscription($payload[1], $payload[2]);
-                    }
-                }
+            if (trim($payload[0]) == 'add_manga') {
                 $this->sendQuestionSubscription($payload[1], $payload[2]);
             }
 
             return 'ok';
+        } elseif (isset($messaging['message'])) {
+            $message = $messaging['message'];
+
+            if (isset($message['quick_reply'])) {
+                $payload = $message['quick_reply']['payload'];
+
+                $payload = explode(',', $payload);
+
+                if (trim($payload[0]) == 'add_manga' && trim($payload[3]) == 'YES') {
+                    $this->addSubscription($payload[1], $payload[2]);
+                }
+            }
         }
     }
 
@@ -73,18 +79,21 @@ class MessengerHandlerController extends Controller
             'gender' => $user->gender,
         ]);
 
-        $this->sendOnlyText('Hi '.$user->first_name.', I am OtameganeBot. Please use the menu.');
+        $this->sendText('Hi '.$user->first_name.', I am OtameganeBot. Please use the menu.');
     }
 
-    private function sendOnlyText($message)
+    private function sendText($text, $quick_replies = [])
     {
+        $message['text'] = $text;
+        if ($quick_replies) {
+            $message['quick_replies'] = $quick_replies;
+        }
+
         $data = [
             'recipient' => [
                 'id' => $this->sender_id,
             ],
-            'message' => [
-                'text' => $message,
-            ]
+            'message' => $message
         ];
 
         $this->sendMessage($data);
@@ -145,7 +154,7 @@ class MessengerHandlerController extends Controller
             return [
                 'type' => "postback",
                 'title' => $source,
-                'payload' => "see_mangas $source",
+                'payload' => "see_mangas, $source",
             ];
         });
 
@@ -163,7 +172,7 @@ class MessengerHandlerController extends Controller
                     [
                         'type' => "postback",
                         'title' => 'Add to subscriptions',
-                        'payload' => "add_manga $manga $source",
+                        'payload' => "add_manga, $manga, $source",
                     ]
                 ]
             ];
@@ -190,5 +199,30 @@ class MessengerHandlerController extends Controller
         ];
 
         $this->sendMessage($data);
+    }
+
+    private function sendQuestionSubscription($manga, $source)
+    {
+        $message = "Do you want subscribe to $manga of $source?";
+
+        $quick_replies = [
+            [
+                'content_type' => 'text',
+                'title' => 'Yes, I want it',
+                'payload' => "add_manga, $manga, $source, YES",
+            ],
+            [
+                'content_type' => 'text',
+                'title' => 'No, thanks',
+                'payload' => "see_mangas, $source",
+            ]
+        ];
+
+        $this->sendText($message, $quick_replies);
+    }
+
+    private function addSubscription($manga, $source)
+    {
+        $this->sendText('Subscription is not available right now for Messenger.');
     }
 }
