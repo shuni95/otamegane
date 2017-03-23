@@ -1,33 +1,25 @@
-@extends('admin.layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Add Manga')
 
 @section('content')
+<div class="container">
 
   @include('admin.error_message')
 
-  <div class="ui basic segment"><h2>{{ $manga->name }}</h2></div>
+  <div class="row"><h2>{{ $manga->name }}</h2></div>
 
-  <div class="ui green segment">
-    <h3 class="ui header">Sources</h3>
-
-    <div class="ui list">
+  <div class="row">
+    <h3>Sources</h3>
+    <ul>
       @foreach ($manga->sources as $source)
-      <div class="item">
-        <div class="content">
-          <a href="{{ $source->url }}">{{ $source->name }}</a>
-        </div>
-      </div>
+      <li>
+        <a href="{{ $source->url }}">{{ $source->name }}</a>
+      </li>
       @endforeach
-    </div>
+    </ul>
   </div>
 
-  <a href="{{ route('mangas.index') }}" class="ui button">Back</a>
-
+  <a href="{{ route('mangas.index') }}" class="btn btn-default">Back</a>
+</div>
 @endsection
-
-@push('scripts')
-<script>
-  $('.ui.checkbox').checkbox();
-</script>
-@endpush

@@ -1,7 +1,6 @@
 @if (session('errors'))
-  <div class="ui error message">
-    <i class="close icon"></i>
-    <div class="header">Whoops!</div>
+  <div class="alert alert-danger">
+    <h4>Whoops!</h4>
     <ul class="list">
     @foreach (session('errors')->all() as $error)
       <li>{{ $error }}</li>
@@ -9,13 +8,3 @@
     </ul>
   </div>
 @endif
-
-@push ('scripts')
-<script>
-$(function(){
-  $('.message .close').click(function() {
-    $(this).closest('.message').transition('fade');
-  });
-});
-</script>
-@endpush
