@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Source;
 use App\Manga;
+use App\MessengerChat;
 
 class MessengerHandlerController extends Controller
 {
@@ -29,72 +30,50 @@ class MessengerHandlerController extends Controller
         } elseif (isset($messaging['postback'])) {
             $payload = $messaging['postback']['payload'];
 
-            if ($payload == 'see_sources') {
-                $this->sendSources();
+            switch ($payload) {
+                case 'start':       $this->start();        break;
+                case 'see_sources': $this->sendSources();  break;
+                case 'my_mangas':   $this->sendMyMangas(); break;
             }
 
             $payload = explode(' ', $payload);
+            $first_arg = trim($payload[0]);
 
-            if (trim($payload[0]) == 'see_mangas') {
+            if ($first_arg == 'see_mangas') {
                 $this->sendMangasOf(trim($payload[1]));
+            }
+
+            if ($first_arg == 'add_manga') {
+                if (isset($payload[3])) {
+                    if ($payload[3] == 'YES') {
+                        $this->addSubscription($payload[1], $payload[2]);
+                    }
+                }
+                $this->sendQuestionSubscription($payload[1], $payload[2]);
             }
 
             return 'ok';
         }
-
-        $message   = $messaging['message'];
-
-        if (isset($message['quick_reply'])) {
-            $quick_reply = $message['quick_reply'];
-            if (isset($quick_reply['payload'])) {
-                switch ($quick_reply['payload']) {
-                    case 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_SQUIRTLE':
-                        $this->sendOnlyText('Escuero Escuero');
-                    break;
-                    case 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_BULBASAUR':
-                        $this->sendOnlyText('Bolba sar');
-                    break;
-                    case 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_CHARMANDER':
-                        $this->sendOnlyText('Char char');
-                    break;
-                }
-            }
-        } else {
-            if ($message['text'] == 'start') {
-                $this->askForStarter();
-            }
-        }
     }
 
-    private function askForStarter()
+    private function start()
     {
-        $data = [
-            'recipient' => [
-                'id' => $this->sender_id,
-            ],
-            'message' => [
-                'text' => 'Choose your starter:',
-                'quick_replies' => [
-                    [
-                        'content_type' => 'text',
-                        'title'   =>'Charmander',
-                        'payload' => 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_CHARMANDER'
-                    ],
-                    [
-                        'content_type' => 'text',
-                        'title'   => 'Bulbasaur',
-                        'payload' => 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_BULBASAUR'
-                    ],
-                    [
-                        'content_type' => 'text',
-                        'title'   => 'Squirtle',
-                        'payload' => 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_SQUIRTLE'
-                    ]
-                ]
-            ],
-        ];
+        $ch = curl_init('https://graph.facebook.com/v2.6/'.$this->sender_id.'?access_token='.env('MESSENGER_ACCESS_TOKEN'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
 
-        $this->sendMessage($data);
+        $user = json_decode($result);
+
+        MessengerChat::create([
+            'chat_id' => $this->sender_id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'locale' => $user->locale,
+            'gender' => $user->gender,
+        ]);
+
+        $this->sendOnlyText('Hi '.$user->first_name.', I am OtameganeBot. Please use the menu.');
     }
 
     private function sendOnlyText($message)
