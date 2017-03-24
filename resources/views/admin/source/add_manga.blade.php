@@ -1,37 +1,31 @@
-@extends('admin.layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Add Source')
 
 @section('content')
+<div class="container">
 
   @include('admin.error_message')
 
-  <div class="ui basic segment"><h2>{{ $source->name }} - Add Manga</h2></div>
+  <div class="row"><h2>{{ $source->name }} - Add Manga</h2></div>
 
-  <form class="ui form" method="POST" action="{{ route('sources.add_manga', ['id' => $source->id]) }}">
+  <form class="form" method="POST" action="{{ route('sources.add_manga', ['id' => $source->id]) }}">
     {{ csrf_field() }}
 
     <div class="field">
-      <label>Manga</label>
+      <label>Mangas</label>
 
       @foreach ($mangas as $manga)
-      <div class="field">
-      <div class="ui toggle checkbox">
-        <input type="checkbox" name="mangas[]" tabindex="0" class="hidden" value="{{ $manga->id }}">
-        <label>{{ $manga->name }}</label>
-      </div>
+      <div class="form-group">
+        <div class="checkbox">
+          <label><input type="checkbox" name="mangas[]" value="{{ $source->id }}">{{ $manga->name }}</label>
+        </div>
       </div>
       @endforeach
     </div>
 
-    <button class="ui green button" type="submit">Add</button>
-    <a href="{{ route('sources.index') }}" class="ui button">Back</a>
+    <button class="btn btn-success" type="submit">Add</button>
+    <a href="{{ route('sources.index') }}" class="btn btn-default">Back</a>
   </form>
-
+</div>
 @endsection
-
-@push('scripts')
-<script>
-  $('.ui.checkbox').checkbox();
-</script>
-@endpush

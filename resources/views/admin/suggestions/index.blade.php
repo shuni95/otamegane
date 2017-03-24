@@ -1,14 +1,12 @@
-@extends('admin.layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Source Listing')
 
 @section('content')
+<div class="container">
+  <div class="row"><h2>List of Suggestions</h2></div>
 
-  @include('admin.success_message')
-
-  <div class="ui blue center aligned segment"><h2>List of Suggestions</h2></div>
-
-  <table class="ui blue very compact table">
+  <table class="table">
     <thead>
       <th>#</th>
       <th>Name</th>
@@ -27,5 +25,5 @@
     @endforeach
     </tbody>
   </table>
-
+</div>
 @endsection

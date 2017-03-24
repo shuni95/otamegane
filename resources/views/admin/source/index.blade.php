@@ -1,22 +1,23 @@
-@extends('admin.layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Source Listing')
 
 @section('content')
+<div class="container" id="app">
 
   @include('admin.success_message')
 
-  <div class="ui blue center aligned segment">
+  <div class="row">
     <h2>List of Sources</h2>
   </div>
 
-  <div class="ui basic right aligned segment">
-    <a class="ui blue button" href="{{ route('sources.add_form') }}">
-      <i class="tag icon"></i> New Source
+  <div class="row">
+    <a class="btn btn-primary" href="{{ route('sources.add_form') }}">
+      <span class="glyphicon glyphicon-leaf" aria-hidden="true"></span> New Source
     </a>
   </div>
 
-  <table class="ui blue very compact table">
+  <table class="table">
     <thead>
       <th>#</th>
       <th>Name</th>
@@ -36,11 +37,13 @@
         <td>{{ $source->num_mangas }}</td>
         <td><a href="{{ $source->url }}">{{ $source->url }}</a></td>
         <td>
-          <a href="{{ route('sources.add_manga_form', ['id' => $source->id]) }}" title="Add Manga"><i class="book icon"></i></a>
+          <a href="{{ route('sources.add_manga_form', ['id' => $source->id]) }}" title="Add Manga">
+            <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+          </a>
         </td>
       </tr>
     @endforeach
     </tbody>
   </table>
-
+</div>
 @endsection
