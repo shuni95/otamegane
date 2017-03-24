@@ -37,11 +37,4 @@ class MangaFoxScrapper extends MangaScrapper
     {
         return (($time == 'Today') || strpos($time, 'minute') || strpos($time, 'hour'));
     }
-
-    protected function getTextNotification($manga, $chapter, $title, $time, $url)
-    {
-        return $manga . " <b>" . $chapter ."</b>\n" .
-                "<i>" . $title . "</i> was released " . $time . "!\n".
-                $url;
-    }
 }

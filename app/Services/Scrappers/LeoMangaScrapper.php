@@ -39,11 +39,4 @@ class LeoMangaScrapper extends MangaScrapper
     {
         return (strpos($time, 'minuto') || strpos($time, 'hora'));
     }
-
-    protected function getTextNotification($manga, $chapter, $title, $time, $url)
-    {
-        return $manga . " <b>" . $chapter ."</b>\n" .
-                "<i>" . $title . "</i> was released " . $time . "!\n".
-                $url;
-    }
 }

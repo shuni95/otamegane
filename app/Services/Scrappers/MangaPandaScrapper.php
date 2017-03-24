@@ -52,11 +52,4 @@ class MangaPandaScrapper extends MangaScrapper
     {
         return ($time == 'Today');
     }
-
-    protected function getTextNotification($manga, $chapter, $title, $time, $url)
-    {
-        return $manga . " <b>" . $chapter ."</b>\n" .
-                "<i>" . $title . "</i> was released " . $time . "!\n".
-                $url;
-    }
 }

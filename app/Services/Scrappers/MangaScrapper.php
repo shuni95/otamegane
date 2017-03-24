@@ -63,7 +63,7 @@ abstract class MangaScrapper
 
         $this->filter($crawler)->each(function ($node) use (&$is_recent) {
             if ($is_recent) {
-                $time  = $this->getTime($node);
+                $time = $this->getTime($node);
 
                 if ($this->isRecent($time)) {
                     $manga = $this->identifyManga($node->html());
@@ -107,6 +107,13 @@ abstract class MangaScrapper
         return TelegramChat::subscribedTo($manga, $this->source->id)->pluck('chat_id');
     }
 
+    protected function getTextNotification($manga, $chapter, $title, $time, $url)
+    {
+        return $manga . " <b>" . $chapter ."</b>\n" .
+                "<i>" . $title . "</i> was released " . $time . "!\n".
+                $url;
+    }
+
     abstract protected function filter($crawler);
 
     abstract protected function getTime($node);
@@ -115,6 +122,4 @@ abstract class MangaScrapper
     abstract protected function getChapter($node);
 
     abstract protected function isRecent($time);
-
-    abstract protected function getTextNotification($manga, $chapter, $title, $time, $url);
 }

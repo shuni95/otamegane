@@ -46,13 +46,6 @@ class MangaStreamScrapper extends MangaScrapper
         return true;
     }
 
-    protected function getTextNotification($manga, $chapter, $title, $time, $url)
-    {
-        return $manga . " <b>" . $chapter ."</b>\n" .
-                "<i>" . $title . "</i> was released " . $time . "!\n".
-                $url;
-    }
-
     /**
      * Identify the manga's name
      * @param  string $html
