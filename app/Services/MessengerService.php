@@ -104,6 +104,6 @@ class MessengerService
             'gender' => $user->gender,
         ]);
 
-        $this->sendText('Hi '.$user->first_name.', I am OtameganeBot. Please use the menu.');
+        $this->sendText($chat_id, 'Hi '.$user->first_name.', I am OtameganeBot. Please use the menu.');
     }
 }

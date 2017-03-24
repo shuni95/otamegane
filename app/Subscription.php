@@ -14,11 +14,15 @@ class Subscription extends Model
 
     public static function alreadySubscribed($manga_source_id, $chat_id)
     {
-        $subscription = (new static())::where('manga_source_id', $manga_source_id)
+        $telegram_subscription = (new static())::where('manga_source_id', $manga_source_id)
             ->where('telegram_chat_id', $chat_id)
             ->first();
 
-        return !is_null($subscription);
+        $messenger_subscription = (new static())::where('manga_source_id', $manga_source_id)
+            ->where('messenger_chat_id', $chat_id)
+            ->first();
+
+        return !is_null($telegram_subscription) || !is_null($messenger_subscription);
     }
 
     public function scopeOfTelegram($query, $manga, $source_id)

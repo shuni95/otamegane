@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Source;
 use App\Manga;
 use App\MessengerChat;
+use App\MangaSource;
+use App\Subscription;
 use App\Services\MessengerService;
 
 class MessengerHandlerController extends Controller
@@ -66,7 +68,7 @@ class MessengerHandlerController extends Controller
                 $payload = explode(',', $payload);
 
                 if (trim($payload[0]) == 'add_manga' && trim($payload[3]) == 'YES') {
-                    $this->addSubscription($payload[1], $payload[2]);
+                    $this->addSubscription(trim($payload[1]), trim($payload[2]));
                 }
             }
         }
@@ -137,6 +139,23 @@ class MessengerHandlerController extends Controller
 
     private function addSubscription($manga, $source)
     {
-        $this->sender->sendText($this->chat_id, 'Subscription is not available right now for Messenger.');
+        $manga_source = MangaSource::getMangaInSource($manga, $source);
+
+        if (is_null($manga_source)) {
+            $text = "Please check the name of the manga and the source ";
+        } else {
+            if (Subscription::alreadySubscribed($manga_source->id, $this->chat_id)) {
+                $text = "You are already subscribed.";
+            } else {
+                Subscription::create([
+                    'manga_source_id' => $manga_source->id,
+                    'messenger_chat_id' => $this->chat_id
+                ]);
+
+                $text = "Manga $manga of $source added successfully";
+            }
+        }
+
+        $this->sender->sendText($this->chat_id, $text);
     }
 }

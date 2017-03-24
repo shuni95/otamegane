@@ -8,6 +8,7 @@ use App\Subscription;
 
 use Goutte;
 use Telegram\Bot\Api as TelegramSender;
+use App\Services\MessengerService as MessengerSender;
 
 abstract class MangaScrapper
 {
@@ -89,6 +90,11 @@ abstract class MangaScrapper
                                 new TelegramSender
                             );
 
+                            $notification->sendSubscribers(
+                                $this->getMessengerSubscribers($manga),
+                                new MessengerSender
+                            );
+
                             $notification->status = 'DONE';
                             $notification->save();
                         }
@@ -103,6 +109,11 @@ abstract class MangaScrapper
     protected function getTelegramSubscribers($manga)
     {
         return Subscription::ofTelegram($manga, $this->source->id)->get();
+    }
+
+    protected function getMessengerSubscribers($manga)
+    {
+        return Subscription::ofMessenger($manga, $this->source->id)->get();
     }
 
     protected function getTextNotification($manga, $chapter, $title, $time, $url)
