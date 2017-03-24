@@ -9,6 +9,7 @@ use App\Manga;
 use App\MessengerChat;
 use App\MangaSource;
 use App\Subscription;
+use App\Notification;
 use App\Services\MessengerService;
 
 class MessengerHandlerController extends Controller
@@ -43,7 +44,7 @@ class MessengerHandlerController extends Controller
             $payload = $this->messaging['postback']['payload'];
 
             switch ($payload) {
-                case 'start':       $this->sender->start($this->chat_id);        break;
+                case 'start':       $this->sender->start($this->chat_id); break;
                 case 'see_sources': $this->sendSources();  break;
                 case 'my_mangas':   $this->sendMyMangas(); break;
             }
@@ -157,5 +158,36 @@ class MessengerHandlerController extends Controller
         }
 
         $this->sender->sendText($this->chat_id, $text);
+    }
+
+    private function sendMyMangas()
+    {
+        $elements = MessengerChat::where('chat_id', $this->chat_id)->first()
+        ->subscriptions->map(function ($subscription) {
+            $manga = $subscription->manga->name;
+            $source = $subscription->source;
+            $notification = Notification::last($manga, $source->id);
+
+            if (!is_null($notification)) {
+                return [
+                    'title' => $manga,
+                    'image_url' => 'https://s-media-cache-ak0.pinimg.com/originals/81/6c/79/816c79d251726a0de313011309281a74.png',
+                    'buttons' => [
+                        [
+                            'title' => "See last chapter",
+                            'type'  => "web_url",
+                            'url'   => $notification->url,
+                        ]
+                    ]
+                ];
+            } else {
+                return [
+                    'title' => $manga,
+                    'subtitle' => $source->name
+                ];
+            }
+        });
+
+        $this->sender->sendGenericTemplate($this->chat_id, $elements);
     }
 }

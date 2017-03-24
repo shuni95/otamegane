@@ -23,7 +23,8 @@ class MyMangaCommand extends Command
 
         $keyboard = Keyboard::make()->inline();
         $counter = 0;
-        TelegramChat::find($chat_id)->subscriptions->each(function ($subscription) use ($keyboard, &$counter) {
+        TelegramChat::where('chat_id', $chat_id)->first()
+        ->subscriptions->each(function ($subscription) use ($keyboard, &$counter) {
             $keyboard->row(Keyboard::inlineButton([
                 'text' => $subscription->manga->name . " - " . $subscription->source->name,
                 'callback_data' => 'info'
