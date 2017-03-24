@@ -19,6 +19,7 @@ class CreateNotificationsTable extends Migration
             $table->string('chapter', 8);
             $table->string('title');
             $table->string('status', 5);
+            $table->string('url', 100);
             $table->unsignedInteger('source_id');
             $table->timestamps();
         });

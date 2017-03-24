@@ -16,7 +16,11 @@ class TelegramChatController extends Controller
 
     public function subscriptions($id)
     {
-        $telegram_chat = TelegramChat::with('subscriptions','subscriptions.manga', 'subscriptions.source')->find($id);
+        $telegram_chat = TelegramChat::with(
+            'subscriptions'
+        )
+        ->where('chat_id', $id)
+        ->first();
 
         return view('admin.telegram_chats.subscriptions', compact('telegram_chat'));
     }

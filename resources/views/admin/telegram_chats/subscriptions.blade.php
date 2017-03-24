@@ -11,7 +11,6 @@
       <th>#</th>
       <th>Manga</th>
       <th>Source</th>
-      <th>Last chapter notified</th>
     </thead>
     <tbody>
       @foreach ($telegram_chat->subscriptions as $subscription)
@@ -19,7 +18,6 @@
         <td>{{ $loop->iteration }}</td>
         <td>{{ $subscription->manga->name }}</td>
         <td>{{ $subscription->source->name }}</td>
-        <td>{{ $subscription->last_chapter }}</td>
       </tr>
       @endforeach
     </tbody>

@@ -22,3 +22,47 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Manga::class, function () {
+    return [
+        'name' => 'TestManga',
+    ];
+});
+
+$factory->define(App\Source::class, function () {
+    return [
+        'name' => 'TestSource',
+        'url'  => 'TestUrl',
+    ];
+});
+
+$factory->define(App\MangaSource::class, function () use ($factory) {
+    return [
+        'manga_id'  => factory(App\Manga::class)->create()->id,
+        'source_id' => factory(App\Source::class)->create()->id
+    ];
+});
+
+$factory->define(App\TelegramChat::class, function (Faker\Generator $faker) {
+    return [
+        'chat_id' => $faker->randomNumber(9),
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+        'username' => $faker->userName,
+        'title' => null,
+        'type'=> 'private',
+    ];
+});
+
+$factory->define(App\Subscription::class, function (Faker\Generator $faker) use ($factory) {
+    return [
+        'manga_source_id' => 1,
+        'telegram_chat_id' => null
+    ];
+});
+
+$factory->state(App\Subscription::class, 'telegram', function () {
+    return [
+        'telegram_chat_id' => factory(App\TelegramChat::class)->create()->chat_id
+    ];
+});

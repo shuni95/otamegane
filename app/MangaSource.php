@@ -8,6 +8,8 @@ class MangaSource extends Model
 {
     protected $table = 'manga_source';
 
+    public $timestamps = false;
+
     public function subscribers()
     {
         return $this->belongsToMany(TelegramChat::class, 'subscriptions', 'manga_source_id', 'telegram_chat_id');
@@ -21,15 +23,6 @@ class MangaSource extends Model
     public function source()
     {
         return $this->belongsTo(Source::class);
-    }
-
-    public function getLastChapterAttribute()
-    {
-        $notification = Notification::last($this->manga->name, $this->source_id);
-
-        if ($notification) {
-            return $notification->chapter . ' ' . $notification->title;
-        }
     }
 
     public static function getMangaInSource($manga_name, $source_name)

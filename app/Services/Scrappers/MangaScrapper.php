@@ -4,10 +4,10 @@ namespace App\Services\Scrappers;
 
 use App\Source;
 use App\Notification;
-use App\TelegramChat;
+use App\Subscription;
 
 use Goutte;
-use Telegram;
+use Telegram\Bot\Api as TelegramSender;
 
 abstract class MangaScrapper
 {
@@ -76,20 +76,18 @@ abstract class MangaScrapper
                             $text = $this->getTextNotification($manga, $chapter, $title, $time, $url);
 
                             $notification = Notification::create([
-                                'manga' => $manga,
-                                'chapter' => $chapter,
-                                'title' => $title,
-                                'status' => 'WIP',
+                                'manga'     => $manga,
+                                'chapter'   => $chapter,
+                                'title'     => $title,
+                                'status'    => 'WIP',
+                                'url'       => $url,
                                 'source_id' => $this->source->id,
                             ]);
 
-                            $this->getSubscribers($manga)->each(function ($suscriber) use ($text) {
-                                Telegram::sendMessage([
-                                    'chat_id' => $suscriber,
-                                    'text' => $text,
-                                    'parse_mode' => 'HTML'
-                                ]);
-                            });
+                            $notification->sendSubscribers(
+                                $this->getTelegramSubscribers($manga),
+                                new TelegramSender
+                            );
 
                             $notification->status = 'DONE';
                             $notification->save();
@@ -102,9 +100,9 @@ abstract class MangaScrapper
         });
     }
 
-    protected function getSubscribers($manga)
+    protected function getTelegramSubscribers($manga)
     {
-        return TelegramChat::subscribedTo($manga, $this->source->id)->pluck('chat_id');
+        return Subscription::ofTelegram($manga, $this->source->id)->get();
     }
 
     protected function getTextNotification($manga, $chapter, $title, $time, $url)
