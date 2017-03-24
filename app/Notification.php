@@ -30,13 +30,15 @@ class Notification extends Model
         foreach ($subscriptions as $subscription) {
             if ($channel_name == 'telegram') {
                 $chat = $subscription->telegram_chat;
+                $notifier->sendMessage($this->getMessage($channel_name, $chat));
+            } elseif ($channel_name == 'messenger') {
+                $chat = $subscription->messenger_chat;
+                $notifier->sendGenericTemplate($this->getMessage());
             }
-
-            $notifier->sendMessage($this->getMessage($channel_name, $chat));
         }
     }
 
-    private function getMessage($channel_name, $chat)
+    private function getMessage($channel_name, $chat = null)
     {
         if ($channel_name == 'telegram') {
             return [
@@ -45,7 +47,9 @@ class Notification extends Model
                 'parse_mode' => 'HTML'
             ];
         } elseif ($channel_name == 'messenger') {
-            // To-do
+            return [
+
+            ];
         }
     }
 

@@ -13,7 +13,7 @@ use App\Subscription;
 use App\Notification;
 use App\MangaSource;
 
-class NotifyMangaTelegramChats extends TestCase
+class NotifyMangaTest extends TestCase
 {
     use DatabaseMigrations;
 

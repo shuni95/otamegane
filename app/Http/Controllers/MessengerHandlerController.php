@@ -7,10 +7,23 @@ use Illuminate\Http\Request;
 use App\Source;
 use App\Manga;
 use App\MessengerChat;
+use App\Services\MessengerService;
 
 class MessengerHandlerController extends Controller
 {
-    protected $sender_id;
+    protected $sender;
+
+    protected $messaging;
+
+    public function __construct(Request $request)
+    {
+        \Log::info(print_r($request->all(), true));
+        if ($request->method() == 'POST') {
+            $entry = $request->input('entry');
+            $this->messaging = $entry[0]['messaging'][0];
+            $this->sender = new MessengerService($this->messaging['sender']['id']);
+        }
+    }
 
     public function verify(Request $request)
     {
@@ -19,16 +32,10 @@ class MessengerHandlerController extends Controller
 
     public function handle(Request $request)
     {
-        \Log::info(print_r($request->all(), true));
-
-        $entry = $request->input('entry');
-        $messaging = $entry[0]['messaging'][0];
-        $this->sender_id = $messaging['sender']['id'];
-
-        if (isset($messaging['delivery'])) {
+        if (isset($this->messaging['delivery'])) {
             return 'ok';
-        } elseif (isset($messaging['postback'])) {
-            $payload = $messaging['postback']['payload'];
+        } elseif (isset($this->messaging['postback'])) {
+            $payload = $this->messaging['postback']['payload'];
 
             switch ($payload) {
                 case 'start':       $this->start();        break;
@@ -47,8 +54,8 @@ class MessengerHandlerController extends Controller
             }
 
             return 'ok';
-        } elseif (isset($messaging['message'])) {
-            $message = $messaging['message'];
+        } elseif (isset($this->messaging['message'])) {
+            $message = $this->messaging['message'];
 
             if (isset($message['quick_reply'])) {
                 $payload = $message['quick_reply']['payload'];
@@ -62,103 +69,27 @@ class MessengerHandlerController extends Controller
         }
     }
 
-    private function start()
-    {
-        $ch = curl_init('https://graph.facebook.com/v2.6/'.$this->sender_id.'?access_token='.env('MESSENGER_ACCESS_TOKEN'));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        $user = json_decode($result);
-
-        MessengerChat::create([
-            'chat_id' => $this->sender_id,
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'locale' => $user->locale,
-            'gender' => $user->gender,
-        ]);
-
-        $this->sendText('Hi '.$user->first_name.', I am OtameganeBot. Please use the menu.');
-    }
-
-    private function sendText($text, $quick_replies = [])
-    {
-        $message['text'] = $text;
-        if ($quick_replies) {
-            $message['quick_replies'] = $quick_replies;
-        }
-
-        $data = [
-            'recipient' => [
-                'id' => $this->sender_id,
-            ],
-            'message' => $message
-        ];
-
-        $this->sendMessage($data);
-    }
-
-    /**
-     * Send to api messenger
-     * @param array $data
-     * @return void
-     */
-    private function sendMessage($data)
-    {
-        $data_string = json_encode($data);
-
-        $ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token='.env('MESSENGER_ACCESS_TOKEN'));
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($data_string))
-        );
-
-        $result = curl_exec($ch);
-        \Log::info(print_r($result, true));
-        curl_close($ch);
-    }
-
-    private function sendMessageWithButtons($text, $buttons)
-    {
-        $data = [
-            'recipient' => [
-                'id' => $this->sender_id,
-            ],
-            'message' => [
-                'attachment' => [
-                    'type' => 'template',
-                    'payload' => [
-                        'template_type' => 'button',
-                        'text' => $text,
-                        'buttons' => $buttons,
-                    ]
-                ]
-            ],
-        ];
-
-        $this->sendMessage($data);
-    }
-
     /**
      * Send sources
      * @return void
      */
     private function sendSources()
     {
-        $buttons = Source::pluck('name')
+        $elements = Source::pluck('name')
         ->map(function ($source) {
             return [
-                'type' => "postback",
                 'title' => $source,
-                'payload' => "see_mangas, $source",
+                'buttons' => [
+                    [
+                        'type' => "postback",
+                        'title' => $source,
+                        'payload' => "see_mangas, $source",
+                    ]
+                ]
             ];
         });
 
-        $this->sendMessageWithButtons('List of sources', $buttons);
+        $this->sender->sendGenericTemplate($elements);
     }
 
     private function sendMangasOf($source)
@@ -178,27 +109,7 @@ class MessengerHandlerController extends Controller
             ];
         });
 
-        $this->sendGenericTemplate($elements);
-    }
-
-    private function sendGenericTemplate($elements)
-    {
-        $data = [
-            'recipient' => [
-                'id' => $this->sender_id,
-            ],
-            'message' => [
-                'attachment' => [
-                    'type' => 'template',
-                    'payload' => [
-                        'template_type' => 'generic',
-                        'elements' => $elements,
-                    ]
-                ]
-            ],
-        ];
-
-        $this->sendMessage($data);
+        $this->sender->sendGenericTemplate($elements);
     }
 
     private function sendQuestionSubscription($manga, $source)
@@ -218,11 +129,11 @@ class MessengerHandlerController extends Controller
             ]
         ];
 
-        $this->sendText($message, $quick_replies);
+        $this->sender->sendText($message, $quick_replies);
     }
 
     private function addSubscription($manga, $source)
     {
-        $this->sendText('Subscription is not available right now for Messenger.');
+        $this->sender->sendText('Subscription is not available right now for Messenger.');
     }
 }

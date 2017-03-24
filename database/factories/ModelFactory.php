@@ -54,6 +54,16 @@ $factory->define(App\TelegramChat::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\MessengerChat::class, function (Faker\Generator $faker) {
+    return [
+        'chat_id' => $faker->randomNumber(9),
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+        'locale' => $faker->locale,
+        'gender' => $faker->randomElement(['male', 'female']),
+    ];
+});
+
 $factory->define(App\Subscription::class, function (Faker\Generator $faker) use ($factory) {
     return [
         'manga_source_id' => 1,
@@ -64,5 +74,11 @@ $factory->define(App\Subscription::class, function (Faker\Generator $faker) use 
 $factory->state(App\Subscription::class, 'telegram', function () {
     return [
         'telegram_chat_id' => factory(App\TelegramChat::class)->create()->chat_id
+    ];
+});
+
+$factory->state(App\Subscription::class, 'messenger', function () {
+    return [
+        'messenger_chat_id' => factory(App\MessengerChat::class)->create()->chat_id
     ];
 });
