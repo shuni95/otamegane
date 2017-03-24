@@ -14,7 +14,7 @@ class CreateMessengerChatsTable extends Migration
     public function up()
     {
         Schema::create('messenger_chats', function (Blueprint $table) {
-            $table->bigInteger('chat_id');
+            $table->bigInteger('chat_id')->unique();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('locale');

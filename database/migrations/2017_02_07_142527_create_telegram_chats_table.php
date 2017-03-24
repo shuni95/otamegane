@@ -14,7 +14,7 @@ class CreateTelegramChatsTable extends Migration
     public function up()
     {
         Schema::create('telegram_chats', function (Blueprint $table) {
-            $table->bigInteger('chat_id');
+            $table->bigInteger('chat_id')->unique();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('title')->nullable();
