@@ -1,20 +1,17 @@
-@extends('admin.layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Subscriptions')
 
 @section('content')
+<div class="container" id="app">
+  <div class="row"><h2>Subscriptions of {{ $telegram_chat->full_name }}</h2></div>
 
-  @include('admin.error_message')
-
-  <div class="ui basic segment"><h2>Subscriptions of {{ $telegram_chat->full_name }}</h2></div>
-
-  <table class="ui table">
+  <table class="table">
     <thead>
       <th>#</th>
       <th>Manga</th>
       <th>Source</th>
       <th>Last chapter notified</th>
-      <th>Actions</th>
     </thead>
     <tbody>
       @foreach ($telegram_chat->subscriptions as $subscription)
@@ -28,12 +25,6 @@
     </tbody>
   </table>
 
-  <a href="{{ route('telegram_chats.index') }}" class="ui button">Back</a>
-
+  <a href="{{ route('telegram_chats.index') }}" class="btn btn-default">Back</a>
+</div>
 @endsection
-
-@push('scripts')
-<script>
-  $('.ui.checkbox').checkbox();
-</script>
-@endpush
