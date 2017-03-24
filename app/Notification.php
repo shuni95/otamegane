@@ -33,7 +33,7 @@ class Notification extends Model
                 $notifier->sendMessage($this->getMessage($channel_name, $chat));
             } elseif ($channel_name == 'messenger') {
                 $chat = $subscription->messenger_chat;
-                $notifier->sendGenericTemplate($this->getMessage());
+                $notifier->sendGenericTemplate($chat->chat_id, $this->getMessage($channel_name));
             }
         }
     }
@@ -48,7 +48,17 @@ class Notification extends Model
             ];
         } elseif ($channel_name == 'messenger') {
             return [
-
+                [
+                    'title' => $this->manga. " " .$this->chapter,
+                    'image_url' => 'https://s-media-cache-ak0.pinimg.com/originals/81/6c/79/816c79d251726a0de313011309281a74.png',
+                    'buttons' => [
+                        [
+                            'type' => 'web_url',
+                            'url' => $this->url,
+                            'title' => $this->title
+                        ]
+                    ]
+                ]
             ];
         }
     }

@@ -12,6 +12,7 @@ use Mockery;
 use App\Subscription;
 use App\Notification;
 use App\MangaSource;
+use App\Services\MessengerService;
 
 class NotifyMangaTest extends TestCase
 {
@@ -24,16 +25,22 @@ class NotifyMangaTest extends TestCase
 
         $telegram = Mockery::spy(Api::class);
 
-        $notification  = Notification::create([
-            'manga' => 'test',
-            'chapter' => 'test',
-            'title' => 'test',
-            'status' => 'test',
-            'source_id' => '1',
-            'url' => 'test.example'
-        ]);
+        $notification  = factory(Notification::class)->create();
 
-        $notification->sendSubscribers($subscriptions, $telegram, 'telegram');
+        $notification->sendSubscribers($subscriptions, $telegram);
         $telegram->shouldHaveReceived('sendMessage')->times(5);
+    }
+
+    public function test_notify_manga_to_messenger_chat_subscribed()
+    {
+        $manga_source  = factory(MangaSource::class)->create();
+        $subscriptions = factory(Subscription::class, 4)->states('messenger')->create();
+
+        $messenger = Mockery::spy(MessengerService::class);
+
+        $notification = factory(Notification::class)->create();
+
+        $notification->sendSubscribers($subscriptions, $messenger);
+        $messenger->shouldHaveReceived('sendGenericTemplate')->times(4);
     }
 }

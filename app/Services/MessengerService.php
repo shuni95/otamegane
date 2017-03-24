@@ -6,14 +6,7 @@ use App\MessengerChat;
 
 class MessengerService
 {
-    protected $sender_id;
-
-    public function __construct($sender_id)
-    {
-        $this->sender_id = $sender_id;
-    }
-
-    public function sendText($text, $quick_replies = [])
+    public function sendText($chat_id, $text, $quick_replies = [])
     {
         $message['text'] = $text;
         if ($quick_replies) {
@@ -22,7 +15,7 @@ class MessengerService
 
         $data = [
             'recipient' => [
-                'id' => $this->sender_id,
+                'id' => $chat_id,
             ],
             'message' => $message
         ];
@@ -53,11 +46,11 @@ class MessengerService
         curl_close($ch);
     }
 
-    public function sendMessageWithButtons($text, $buttons)
+    public function sendMessageWithButtons($chat_id, $text, $buttons)
     {
         $data = [
             'recipient' => [
-                'id' => $this->sender_id,
+                'id' => $chat_id,
             ],
             'message' => [
                 'attachment' => [
@@ -74,11 +67,11 @@ class MessengerService
         $this->sendMessage($data);
     }
 
-    public function sendGenericTemplate($elements)
+    public function sendGenericTemplate($chat_id, $elements)
     {
         $data = [
             'recipient' => [
-                'id' => $this->sender_id,
+                'id' => $chat_id,
             ],
             'message' => [
                 'attachment' => [
@@ -94,9 +87,9 @@ class MessengerService
         $this->sendMessage($data);
     }
 
-    public function start()
+    public function start($chat_id)
     {
-        $ch = curl_init('https://graph.facebook.com/v2.6/'.$this->sender_id.'?access_token='.env('MESSENGER_ACCESS_TOKEN'));
+        $ch = curl_init('https://graph.facebook.com/v2.6/'.$chat_id.'?access_token='.env('MESSENGER_ACCESS_TOKEN'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         curl_close($ch);
@@ -104,7 +97,7 @@ class MessengerService
         $user = json_decode($result);
 
         MessengerChat::create([
-            'chat_id' => $this->sender_id,
+            'chat_id' => $chat_id,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'locale' => $user->locale,

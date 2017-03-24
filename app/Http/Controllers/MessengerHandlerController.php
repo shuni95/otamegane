@@ -15,13 +15,16 @@ class MessengerHandlerController extends Controller
 
     protected $messaging;
 
+    protected $chat_id;
+
     public function __construct(Request $request)
     {
         \Log::info(print_r($request->all(), true));
         if ($request->method() == 'POST') {
             $entry = $request->input('entry');
             $this->messaging = $entry[0]['messaging'][0];
-            $this->sender = new MessengerService($this->messaging['sender']['id']);
+            $this->sender    = new MessengerService;
+            $this->chat_id   = $this->messaging['sender']['id'];
         }
     }
 
@@ -38,7 +41,7 @@ class MessengerHandlerController extends Controller
             $payload = $this->messaging['postback']['payload'];
 
             switch ($payload) {
-                case 'start':       $this->start();        break;
+                case 'start':       $this->sender->start($this->chat_id);        break;
                 case 'see_sources': $this->sendSources();  break;
                 case 'my_mangas':   $this->sendMyMangas(); break;
             }
@@ -89,7 +92,7 @@ class MessengerHandlerController extends Controller
             ];
         });
 
-        $this->sender->sendGenericTemplate($elements);
+        $this->sender->sendGenericTemplate($this->chat_id, $elements);
     }
 
     private function sendMangasOf($source)
@@ -109,7 +112,7 @@ class MessengerHandlerController extends Controller
             ];
         });
 
-        $this->sender->sendGenericTemplate($elements);
+        $this->sender->sendGenericTemplate($this->chat_id, $elements);
     }
 
     private function sendQuestionSubscription($manga, $source)
@@ -129,11 +132,11 @@ class MessengerHandlerController extends Controller
             ]
         ];
 
-        $this->sender->sendText($message, $quick_replies);
+        $this->sender->sendText($this->chat_id, $message, $quick_replies);
     }
 
     private function addSubscription($manga, $source)
     {
-        $this->sender->sendText('Subscription is not available right now for Messenger.');
+        $this->sender->sendText($this->chat_id, 'Subscription is not available right now for Messenger.');
     }
 }

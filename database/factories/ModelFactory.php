@@ -82,3 +82,14 @@ $factory->state(App\Subscription::class, 'messenger', function () {
         'messenger_chat_id' => factory(App\MessengerChat::class)->create()->chat_id
     ];
 });
+
+$factory->define(App\Notification::class, function () {
+    return [
+        'manga' => 'test',
+        'chapter' => 'test',
+        'title' => 'test',
+        'status' => 'test',
+        'source_id' => '1',
+        'url' => 'test.example'
+    ];
+});
