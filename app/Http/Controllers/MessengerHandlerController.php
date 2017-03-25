@@ -22,7 +22,6 @@ class MessengerHandlerController extends Controller
 
     public function __construct(Request $request)
     {
-        \Log::info(print_r($request->all(), true));
         if ($request->method() == 'POST') {
             $entry = $request->input('entry');
             $this->messaging = $entry[0]['messaging'][0];

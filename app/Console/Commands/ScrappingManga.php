@@ -41,6 +41,8 @@ class ScrappingManga extends Command
             'Scrappers\\MangaStreamScrapper',
             'Scrappers\\MangaPandaScrapper',
             'Scrappers\\MangaFoxScrapper',
+            'Scrappers\\LeoMangaScrapper',
+            'Scrappers\\RawSenMangaScrapper',
             'ApiScrappers\\TuMangaOnlineScrapper',
         ]);
     }

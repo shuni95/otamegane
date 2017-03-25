@@ -42,7 +42,6 @@ class MessengerService
         );
 
         $result = curl_exec($ch);
-        \Log::info(print_r($result, true));
         curl_close($ch);
     }
 
