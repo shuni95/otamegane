@@ -6,8 +6,9 @@ use Carbon\Carbon;
 use App\Source;
 use App\Notification;
 use App\TelegramChat;
-
-use Telegram;
+use App\Subscription;
+use Telegram\Bot\Api as TelegramSender;
+use App\Services\MessengerService as MessengerSender;
 
 class TuMangaOnlineScrapper
 {
@@ -46,8 +47,6 @@ class TuMangaOnlineScrapper
                             $manga_url = $update['capitulo']['tomo']['manga']['nombreUrl'];
 
                             $url = $this->makeLink($manga_url, $id_manga, $chapter, $id_scan);
-
-                            $text = $this->getTextNotification($manga, $chapter, $url);
 
                             $notification = Notification::create([
                                 'manga'     => $manga,
@@ -119,5 +118,15 @@ class TuMangaOnlineScrapper
     public function getSubscribers($manga)
     {
         return TelegramChat::subscribedTo($manga, $this->source->id)->pluck('chat_id');
+    }
+
+    protected function getTelegramSubscribers($manga)
+    {
+        return Subscription::ofTelegram($manga, $this->source->id)->get();
+    }
+
+    protected function getMessengerSubscribers($manga)
+    {
+        return Subscription::ofMessenger($manga, $this->source->id)->get();
     }
 }
