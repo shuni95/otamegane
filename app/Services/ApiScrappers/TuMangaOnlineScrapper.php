@@ -50,20 +50,23 @@ class TuMangaOnlineScrapper
                             $text = $this->getTextNotification($manga, $chapter, $url);
 
                             $notification = Notification::create([
-                                'manga' => $manga,
-                                'chapter' => $chapter,
-                                'title' => '-',
-                                'status' => 'WIP',
+                                'manga'     => $manga,
+                                'chapter'   => $chapter,
+                                'title'     => $chapter,
+                                'status'    => 'WIP',
+                                'url'       => $url,
                                 'source_id' => $this->source->id,
                             ]);
 
-                            $this->getSubscribers($manga)->each(function ($suscriber) use ($text) {
-                                Telegram::sendMessage([
-                                    'chat_id' => $suscriber,
-                                    'text' => $text,
-                                    'parse_mode' => 'HTML'
-                                ]);
-                            });
+                            $notification->sendSubscribers(
+                                $this->getTelegramSubscribers($manga),
+                                new TelegramSender
+                            );
+
+                            $notification->sendSubscribers(
+                                $this->getMessengerSubscribers($manga),
+                                new MessengerSender
+                            );
 
                             $notification->status = 'DONE';
                             $notification->save();
@@ -111,12 +114,6 @@ class TuMangaOnlineScrapper
     public function dontExistsPreviousNotification($manga, $chapter)
     {
         return is_null(Notification::previous($manga, $chapter, $this->source->id)->first());
-    }
-
-    public function getTextNotification($manga, $chapter, $url)
-    {
-        return $manga . " <b>" . $chapter ."</b>\n" .
-               $url;
     }
 
     public function getSubscribers($manga)

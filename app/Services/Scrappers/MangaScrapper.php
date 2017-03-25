@@ -74,8 +74,6 @@ abstract class MangaScrapper
                         $title   = $this->getTitle($node);
                         $chapter = $this->getChapter($node);
                         if ($this->dontExistsPreviousNotification($manga, $chapter)) {
-                            $text = $this->getTextNotification($manga, $chapter, $title, $time, $url);
-
                             $notification = Notification::create([
                                 'manga'     => $manga,
                                 'chapter'   => $chapter,
@@ -114,13 +112,6 @@ abstract class MangaScrapper
     protected function getMessengerSubscribers($manga)
     {
         return Subscription::ofMessenger($manga, $this->source->id)->get();
-    }
-
-    protected function getTextNotification($manga, $chapter, $title, $time, $url)
-    {
-        return $manga . " <b>" . $chapter ."</b>\n" .
-                "<i>" . $title . "</i> was released " . $time . "!\n".
-                $url;
     }
 
     abstract protected function filter($crawler);
