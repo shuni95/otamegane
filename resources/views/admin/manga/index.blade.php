@@ -41,6 +41,9 @@
     @endforeach
     </tbody>
   </table>
+  <div class="text-center">
+    {{ $mangas->links() }}
+  </div>
 
   <script type="text/javascript">
     var templateShowUrl = "{{ route('mangas.show',['id' => 'manga_id']) }}";
