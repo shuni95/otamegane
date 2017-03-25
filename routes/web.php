@@ -17,9 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-$router->get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@index']);
+$router->get('/privacy-policy', ['as' => 'privacy-policy', 'uses' => function() {
+    return view('landing.privacy_policy');
+}]);
 
 $router->group(['middleware' => 'auth'], function ($router) {
+    $router->get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@index']);
     $router->get('/sources', ['as' => 'sources.index' ,'uses' => 'SourceController@index']);
     $router->get('/sources/new', ['as' => 'sources.add_form' ,'uses' => 'SourceController@create']);
     $router->post('/sources', ['as' => 'sources.add' ,'uses' => 'SourceController@store']);
