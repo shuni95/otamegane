@@ -23,7 +23,7 @@ class StartCommand extends Command
         $from = $message->getFrom();
         $chat = $message->getChat();
 
-        $telegram_user = TelegramChat::find($chat->getId());
+        $telegram_user = TelegramChat::where('chat_id', $chat->getId())->first();
 
         if (is_null($telegram_user)) {
             if ($chat->getType() == 'private') {
