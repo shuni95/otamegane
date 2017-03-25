@@ -70,6 +70,17 @@ class MessengerHandlerController extends Controller
                 if (trim($payload[0]) == 'add_manga' && trim($payload[3]) == 'YES') {
                     $this->addSubscription(trim($payload[1]), trim($payload[2]));
                 }
+            } elseif (isset($message['text'])) {
+                $command = strtolower($message['text']);
+
+                switch ($command) {
+                    case 'see sources':
+                    case 'sources':
+                    case 'list sources':
+                        $this->sendSources();  break;
+                    case 'my mangas':
+                        $this->sendMyMangas(); break;
+                }
             }
         }
     }
